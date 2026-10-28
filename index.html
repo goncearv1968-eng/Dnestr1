@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Днестровский Берег — база отдыха на Днестре</title>
+<meta name="description" content="База отдыха «Днестровский Берег» на берегу Днестра: гостиница, ресторан, бассейн, сауна, мангальные домики.">
+<meta name="theme-color" content="#1f4a37">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--green:#2f6b4f;--green-dark:#1f4a37;--sand:#f4efe6;--blue:#3d7ea6;--text:#2b2b2b;--muted:#6b6b6b;--gold:#e8b44a;--red:#c94a4a;--header-h:70px;--gap-1cm:1cm;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + var(--gap-1cm));}
+  body{font-family:'Segoe UI',Tahoma,sans-serif;color:var(--text);background:var(--sand);line-height:1.6;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(31,74,55,.97);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 3%;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.15);}
+  .logo{font-size:1.1rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+  .logo span{color:#a8d5b5;}
+  nav ul{display:flex;gap:2px;list-style:none;flex-wrap:nowrap;justify-content:center;flex:1;}
+  nav li{flex-shrink:0;}
+  nav a{display:inline-block;padding:6px 9px;border-radius:20px;font-size:.82rem;cursor:pointer;transition:.2s;white-space:nowrap;}
+  nav a:hover,nav a.active{background:#a8d5b5;color:var(--green-dark);}
+  .header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .lang-switch{display:flex;gap:2px;background:#ffffff1a;border-radius:20px;padding:3px;}
+  .lang-switch button{background:transparent;border:none;color:#fff;cursor:pointer;padding:5px 9px;border-radius:16px;font-size:.75rem;font-weight:600;transition:.2s;font-family:inherit;}
+  .lang-switch button:hover{background:#ffffff33;}
+  .lang-switch button.active{background:#a8d5b5;color:var(--green-dark);}
+  .btn{display:inline-block;padding:9px 16px;border-radius:30px;background:var(--green);color:#fff;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:.2s;font-family:inherit;white-space:nowrap;}
+  .btn:hover{background:var(--green-dark);transform:translateY(-2px);}
+  .btn-outline{background:transparent;border:2px solid #fff;}
+  .btn-outline:hover{background:#fff;color:var(--green);}
+  .account-btn{background:#a8d5b5;color:var(--green-dark);padding:7px 13px;border-radius:30px;font-weight:700;font-size:.8rem;cursor:pointer;border:none;transition:.2s;font-family:inherit;white-space:nowrap;}
+  .account-btn:hover{background:#8fc9a1;}
+  .burger{display:none;background:transparent;border:none;color:#fff;font-size:1.6rem;cursor:pointer;padding:4px 10px;line-height:1;}
+
+  .page{display:none;padding-top:calc(var(--header-h) + var(--gap-1cm));min-height:100vh;}
+  .page.active{display:block;}
+  .page:not(#page-home) > section:not(.restaurant-hero),
+  .page:not(#page-home) > div:not(.restaurant-hero),
+  .page:not(#page-home) > footer{max-width:1200px;margin-left:auto;margin-right:auto;}
+  .page:not(#page-home) > section:first-child:not(.restaurant-hero),
+  .page:not(#page-home) > div:first-child > .page-title{padding-top:0 !important;margin-top:0 !important;}
+  .booking-page,.auth-page,.account-page,.admin-page{padding-top:0 !important;margin-top:0 !important;}
+
+  .hero{min-height:calc(100vh - var(--header-h) - var(--gap-1cm));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 20px 80px;background:linear-gradient(rgba(20,45,35,.55),rgba(20,45,35,.65)),url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;color:#fff;}
+  .hero h1{font-size:clamp(2rem,5vw,3.4rem);max-width:900px;margin-bottom:18px;line-height:1.2;}
+  .hero p{font-size:1.15rem;max-width:640px;margin-bottom:32px;opacity:.95;}
+  .hero .buttons{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+  section{padding:60px 6%;}
+  .section-title{text-align:center;margin-bottom:40px;}
+  .section-title h2{font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--green-dark);margin-bottom:10px;}
+  .section-title p{color:var(--muted);max-width:600px;margin:0 auto;}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;justify-items:center;}
+  .about-grid img{border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.15);width:100%;max-width:550px;height:auto;}
+  .about-grid h3{color:var(--green-dark);font-size:1.5rem;margin-bottom:16px;}
+  .about-grid ul{list-style:none;margin-top:18px;}
+  .about-grid li{padding:8px 0 8px 30px;position:relative;}
+  .about-grid li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;justify-content:center;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.08);transition:.3s;}
+  .card:hover{transform:translateY(-6px);box-shadow:0 16px 36px rgba(0,0,0,.14);}
+  .card img{height:200px;object-fit:cover;width:100%;}
+  .card-body{padding:22px;}
+  .card-body h3{color:var(--green-dark);margin-bottom:10px;font-size:1.2rem;}
+  .card-body p{color:var(--muted);font-size:.92rem;margin-bottom:14px;}
+  .price{color:var(--blue);font-weight:700;font-size:1.05rem;}
+
+  .rooms{background:#fff;}
+  .room-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;}
+  .room{background:var(--sand);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.07);}
+  .room img{height:210px;object-fit:cover;width:100%;}
+  .room-body{padding:22px;}
+  .room-body h3{color:var(--green-dark);margin-bottom:8px;}
+  .room-body .features{color:var(--muted);font-size:.9rem;margin-bottom:14px;}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;justify-items:center;}
+  .split img{border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.15);width:100%;max-width:550px;height:auto;object-fit:cover;}
+  .split h3{color:var(--green-dark);font-size:1.6rem;margin-bottom:16px;}
+  .split ul{list-style:none;margin:16px 0;}
+  .split li{padding:6px 0 6px 26px;position:relative;color:var(--muted);}
+  .split li::before{content:"•";position:absolute;left:6px;color:var(--green);font-size:1.4rem;line-height:1;}
+
+  .mangal{background:var(--green-dark);color:#fff;}
+  .mangal .section-title h2{color:#fff;}
+  .mangal .section-title p{color:#c9d9cf;}
+  .mangal .cards .card{background:#ffffff0d;border:1px solid #ffffff1a;color:#fff;}
+  .mangal .card-body h3{color:#a8d5b5;}
+  .mangal .card-body p{color:#c9d9cf;}
+
+  .gallery{background:#fff;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;justify-content:center;}
+  .gallery-grid img{width:100%;height:200px;object-fit:cover;border-radius:12px;cursor:pointer;transition:.3s;}
+  .gallery-grid img:hover{transform:scale(1.04);}
+
+  .reviews{background:var(--sand);}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+  .review{background:#fff;border-radius:16px;padding:26px;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+  .review .stars{color:var(--gold);font-size:1.15rem;margin-bottom:12px;letter-spacing:2px;}
+  .review .text{color:var(--text);font-style:italic;margin-bottom:16px;line-height:1.7;}
+  .review .author{display:flex;align-items:center;gap:12px;}
+  .review .avatar{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+  .review .name{font-weight:700;color:var(--green-dark);font-size:.95rem;}
+  .review .date{color:var(--muted);font-size:.82rem;}
+  .reviews-summary{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:40px;flex-wrap:wrap;background:#fff;border-radius:16px;padding:24px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .reviews-summary .score{font-size:3rem;font-weight:800;color:var(--green-dark);}
+  .reviews-summary .stars{color:var(--gold);font-size:1.4rem;}
+  .reviews-summary .count{color:var(--muted);font-size:.9rem;}
+
+  .price-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+  .price-table th,.price-table td{padding:14px 18px;text-align:left;border-bottom:1px solid #eee;}
+  .price-table th{background:var(--green);color:#fff;font-weight:600;}
+  .price-table tr:last-child td{border-bottom:none;}
+  .price-table td:last-child{font-weight:700;color:var(--blue);text-align:right;}
+
+  .contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+  .contact-item{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;}
+  .contact-item .ico{font-size:1.4rem;color:var(--green);}
+  .contact-item strong{display:block;color:var(--green-dark);margin-bottom:2px;}
+  iframe{width:100%;height:320px;border:none;border-radius:16px;}
+
+  .newsletter{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;text-align:center;padding:60px 6%;}
+  .newsletter h2{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:12px;color:#a8d5b5;}
+  .newsletter p{max-width:560px;margin:0 auto 32px;opacity:.95;}
+  .newsletter-form{max-width:520px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .newsletter-form input{flex:1;min-width:200px;padding:14px 18px;border-radius:30px;border:none;font-size:1rem;font-family:inherit;}
+  .newsletter-form button{padding:14px 32px;border-radius:30px;border:none;background:var(--gold);color:var(--green-dark);font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit;}
+  .newsletter-success{display:none;background:#ffffff22;border-radius:12px;padding:20px;max-width:520px;margin:0 auto;font-weight:600;}
+  .newsletter-success.active{display:block;}
+
+  footer{background:var(--green-dark);color:#c9d9cf;text-align:center;padding:34px 6%;font-size:.9rem;}
+
+  .booking-page{max-width:900px;margin:0 auto;padding:0 6% 60px;}
+  .booking-page .page-title{text-align:center;margin-bottom:40px;}
+  .booking-page .page-title h1{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--green-dark);margin-bottom:10px;}
+  .booking-page .page-title p{color:var(--muted);}
+  .booking-form{background:#fff;border-radius:18px;padding:36px;box-shadow:0 14px 40px rgba(0,0,0,.1);}
+  .form-section{margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid #eee;}
+  .form-section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .form-section h2{font-size:1.15rem;color:var(--green-dark);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+  .form-section h2 .num{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:6px;font-weight:600;}
+  .field input,.field select,.field textarea{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #ddd;font-size:1rem;font-family:inherit;background:#fff;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px #2f6b4f22;}
+  .field textarea{resize:vertical;min-height:80px;}
+
+  /* ===== ГЛАЗОК ДЛЯ ПАРОЛЯ (СЛЕВА) ===== */
+  .password-wrap{position:relative;width:100%;}
+  .password-wrap input{width:100%;padding:12px 15px 12px 46px;border-radius:10px;border:1px solid #ddd;font-size:1rem;font-family:inherit;background:#fff;}
+  .password-wrap input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px #2f6b4f22;}
+  .pass-toggle{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    background:transparent;border:none;cursor:pointer;
+    font-size:1.15rem;color:var(--muted);
+    width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+    padding:0;border-radius:50%;transition:.2s;z-index:2;
+  }
+  .pass-toggle:hover{background:#2f6b4f1a;color:var(--green);}
+
+  .calendar{background:#fff;border-radius:14px;padding:16px;margin-top:16px;border:1px solid #eee;}
+  .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .calendar-header button{background:transparent;border:1px solid #ddd;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:1rem;font-family:inherit;}
+  .calendar-header button:hover{background:var(--green);color:#fff;border-color:var(--green);}
+  .calendar-header .month{font-weight:700;color:var(--green-dark);}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-day-name{text-align:center;font-size:.75rem;color:var(--muted);font-weight:600;padding:4px 0;}
+  .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:.9rem;cursor:pointer;transition:.2s;background:#f7f7f7;}
+  .cal-day:hover{background:#e6f0ea;}
+  .cal-day.other-month{color:#ccc;background:transparent;cursor:default;}
+  .cal-day.booked{background:#fde2e2;color:var(--red);text-decoration:line-through;cursor:not-allowed;}
+  .cal-day.selected{background:var(--green);color:#fff;font-weight:700;}
+  .cal-day.today{border:2px solid var(--gold);}
+  .cal-legend{display:flex;gap:16px;margin-top:12px;font-size:.8rem;color:var(--muted);flex-wrap:wrap;}
+  .cal-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .cal-legend .dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .cal-legend .dot.avail{background:#f7f7f7;border:1px solid #ddd;}
+  .cal-legend .dot.bkd{background:#fde2e2;}
+  .cal-legend .dot.sel{background:var(--green);}
+
+  .extras{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .extra-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid #ddd;border-radius:10px;cursor:pointer;transition:.2s;background:#fafafa;font-size:.95rem;}
+  .extra-item:hover{border-color:var(--green);background:#f0f7f3;}
+  .extra-item input{width:18px;height:18px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
+
+  .summary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border-radius:14px;padding:26px;margin-top:28px;}
+  .summary h3{font-size:1.1rem;margin-bottom:16px;color:#a8d5b5;}
+  .summary-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.95rem;border-bottom:1px solid #ffffff22;}
+  .summary-row:last-of-type{border-bottom:none;}
+  .summary-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:2px solid #ffffff33;font-size:1.1rem;}
+  .summary-total strong{font-size:1.8rem;color:#a8d5b5;}
+  .submit-btn{width:100%;margin-top:24px;padding:16px;border-radius:30px;background:var(--green);color:#fff;font-size:1.1rem;font-weight:700;border:none;cursor:pointer;transition:.2s;font-family:inherit;}
+  .submit-btn:hover{background:var(--green-dark);}
+  .submit-btn:disabled{opacity:.7;cursor:wait;}
+
+  .success{display:none;text-align:center;padding:40px 20px;}
+  .success.active{display:block;}
+  .success .check{font-size:4rem;color:var(--green);margin-bottom:16px;}
+  .success h2{color:var(--green-dark);margin-bottom:12px;}
+  .success p{color:var(--muted);margin-bottom:24px;}
+
+  .admin-page{max-width:1200px;margin:0 auto;padding:0 6% 60px;}
+  .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px;}
+  .admin-header h1{color:var(--green-dark);font-size:clamp(1.6rem,3vw,2.2rem);}
+  .admin-tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
+  .admin-tabs button{padding:10px 20px;border-radius:24px;border:2px solid var(--green);background:transparent;color:var(--green-dark);font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;}
+  .admin-tabs button.active{background:var(--green);color:#fff;}
+  .admin-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,.08);margin-bottom:24px;}
+  .admin-box h2{color:var(--green-dark);margin-bottom:18px;font-size:1.3rem;}
+  .admin-input{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #ddd;font-size:1rem;margin-bottom:12px;font-family:inherit;}
+  .admin-table{width:100%;border-collapse:collapse;font-size:.9rem;}
+  .admin-table th,.admin-table td{padding:12px;text-align:left;border-bottom:1px solid #eee;}
+  .admin-table th{background:var(--sand);font-weight:700;color:var(--green-dark);}
+  .admin-table .status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:600;}
+  .admin-table .status.new{background:#e3f2fd;color:#1976d2;}
+  .admin-table .status.confirmed{background:#e8f5e9;color:#388e3c;}
+  .admin-table .status.cancelled{background:#ffebee;color:var(--red);}
+  .admin-table .status.paid{background:#e8f5e9;color:#388e3c;}
+  .admin-table .actions button{background:transparent;border:none;cursor:pointer;font-size:1.1rem;margin:0 4px;opacity:.7;transition:.2s;}
+  .admin-table .actions button:hover{opacity:1;transform:scale(1.2);}
+  .admin-empty{text-align:center;color:var(--muted);padding:40px;font-style:italic;}
+  .date-chip{display:inline-block;background:#fde2e2;color:var(--red);padding:5px 12px;border-radius:16px;margin:4px;font-size:.85rem;font-weight:600;}
+  .date-chip .rm{margin-left:6px;cursor:pointer;font-weight:700;}
+
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
+  .stat-card{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(0,0,0,.06);border-left:4px solid var(--green);}
+  .stat-card .label{font-size:.85rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;font-weight:600;}
+  .stat-card .value{font-size:2rem;font-weight:800;color:var(--green-dark);line-height:1;}
+  .stat-card.gold{border-left-color:var(--gold);}
+  .stat-card.gold .value{color:#c28a1a;}
+  .stat-card.blue{border-left-color:var(--blue);}
+  .stat-card.blue .value{color:var(--blue);}
+
+  .account-page{max-width:900px;margin:0 auto;padding:0 6% 60px;}
+  .account-header{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border-radius:20px;padding:32px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .account-header h1{font-size:clamp(1.5rem,3vw,2rem);color:#fff;}
+  .account-header .avatar-big{width:64px;height:64px;border-radius:50%;background:#a8d5b5;color:var(--green-dark);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;}
+  .account-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .account-tabs button{padding:10px 22px;border-radius:24px;border:2px solid var(--green);background:transparent;color:var(--green-dark);font-weight:600;cursor:pointer;transition:.2s;font-size:.9rem;font-family:inherit;}
+  .account-tabs button.active{background:var(--green);color:#fff;}
+  .account-panel{display:none;}
+  .account-panel.active{display:block;}
+
+  .booking-card{background:#fff;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 14px rgba(0,0,0,.06);border-left:4px solid var(--green);}
+  .booking-card.cancelled{border-left-color:var(--red);opacity:.8;}
+  .booking-card.past{border-left-color:var(--muted);opacity:.85;}
+  .booking-card.paid{border-left-color:#388e3c;background:#f1f8f4;}
+  .booking-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  .booking-card-header .room-name{font-weight:700;color:var(--green-dark);font-size:1.1rem;}
+  .booking-card-header .dates{color:var(--muted);font-size:.9rem;}
+  .booking-card-body{font-size:.9rem;color:var(--text);}
+  .booking-card-body strong{color:var(--green-dark);}
+  .booking-status{display:inline-block;padding:4px 12px;border-radius:12px;font-size:.8rem;font-weight:700;}
+  .booking-status.new{background:#e3f2fd;color:#1976d2;}
+  .booking-status.confirmed{background:#e8f5e9;color:#388e3c;}
+  .booking-status.cancelled{background:#ffebee;color:var(--red);}
+  .booking-status.past{background:#eee;color:var(--muted);}
+  .booking-status.paid{background:#c8e6c9;color:#1b5e20;}
+  .booking-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+  .booking-actions button{padding:7px 16px;border-radius:20px;border:none;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;}
+  .booking-actions .cancel{background:#ffebee;color:var(--red);}
+  .booking-actions .review{background:#e3f2fd;color:#1976d2;}
+
+  .bonus-card{background:linear-gradient(135deg,#e8b44a,#f0c85a);color:var(--green-dark);border-radius:16px;padding:24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .bonus-card .val{font-size:2.2rem;font-weight:800;line-height:1;}
+  .bonus-card .lbl{font-size:.9rem;font-weight:600;opacity:.8;}
+
+  .auth-page{max-width:460px;margin:0 auto;padding:0 6% 60px;}
+  .auth-box{background:#fff;border-radius:20px;padding:40px;box-shadow:0 14px 40px rgba(0,0,0,.1);}
+  .auth-box h1{color:var(--green-dark);text-align:center;margin-bottom:8px;font-size:1.8rem;}
+  .auth-box .subtitle{text-align:center;color:var(--muted);margin-bottom:28px;font-size:.92rem;}
+  .auth-btn{width:100%;padding:14px;border-radius:30px;background:var(--green);color:#fff;font-size:1rem;font-weight:700;border:none;cursor:pointer;transition:.2s;margin-top:8px;font-family:inherit;}
+  .auth-btn:hover{background:var(--green-dark);}
+  .auth-switch{text-align:center;margin-top:20px;font-size:.9rem;color:var(--muted);}
+  .auth-switch a{color:var(--green);font-weight:700;cursor:pointer;}
+  .auth-error{background:#ffebee;color:var(--red);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:.88rem;line-height:1.5;display:none;border-left:4px solid var(--red);}
+  .auth-error.active{display:block;}
+  .auth-msg{background:#e8f5e9;color:#388e3c;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:.88rem;line-height:1.5;display:none;border-left:4px solid #388e3c;}
+  .auth-msg.active{display:block;}
+
+  .loader{text-align:center;padding:40px;color:var(--muted);}
+
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+  .lightbox.active{display:flex;}
+  .lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;}
+  .lightbox .close{position:absolute;top:20px;right:28px;font-size:2.4rem;color:#fff;cursor:pointer;background:none;border:none;}
+  .lightbox .nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:#ffffff22;border:none;color:#fff;font-size:2rem;width:52px;height:52px;border-radius:50%;cursor:pointer;}
+  .lightbox .prev{left:20px;}
+  .lightbox .next{right:20px;}
+
+  .restaurant-hero{width:100%;min-height:calc(80vh - var(--header-h) - var(--gap-1cm));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 20px;background:linear-gradient(rgba(20,45,35,.55),rgba(20,45,35,.7)),url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;color:#fff;position:relative;}
+  .restaurant-hero h1{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:16px;line-height:1.2;max-width:800px;}
+  .restaurant-hero p{font-size:1.15rem;max-width:640px;margin-bottom:32px;opacity:.95;}
+  .restaurant-hero .buttons{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+  .restaurant-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto;padding:0;}
+  .info-card{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.08);border-top:4px solid var(--green);}
+  .info-card .ico{font-size:2rem;margin-bottom:10px;display:block;}
+  .info-card .lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:6px;}
+  .info-card .val{font-size:1.1rem;font-weight:700;color:var(--green-dark);}
+
+  .menu-section{background:#fff;}
+  .menu-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .menu-tabs button{padding:10px 24px;border-radius:24px;border:2px solid var(--green);background:transparent;color:var(--green-dark);font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;font-size:.9rem;}
+  .menu-tabs button.active{background:var(--green);color:#fff;}
+  .menu-tabs button:hover{background:var(--green);color:#fff;}
+
+  .menu-panel{display:none;max-width:800px;margin:0 auto;}
+  .menu-panel.active{display:block;}
+
+  .menu-item{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 0;border-bottom:1px dashed #e0e0e0;gap:16px;}
+  .menu-item:last-child{border-bottom:none;}
+  .menu-item .details{flex:1;}
+  .menu-item h4{color:var(--green-dark);margin-bottom:4px;font-size:1.05rem;}
+  .menu-item p{color:var(--muted);font-size:.88rem;line-height:1.5;}
+  .menu-item .price-tag{font-weight:800;color:var(--blue);font-size:1.05rem;white-space:nowrap;}
+
+  .dishes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;justify-content:center;max-width:1000px;margin:0 auto;}
+  .dish{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;aspect-ratio:1;box-shadow:0 8px 24px rgba(0,0,0,.1);}
+  .dish img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+  .dish:hover img{transform:scale(1.1);}
+  .dish .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 60%);display:flex;align-items:flex-end;padding:16px;color:#fff;}
+  .dish .overlay h4{font-size:1rem;font-weight:700;}
+
+  .atmosphere{background:var(--green-dark);color:#fff;}
+  .atmosphere .section-title h2{color:#fff;}
+  .atmosphere .section-title p{color:#c9d9cf;}
+  .atmosphere-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;justify-content:center;max-width:1000px;margin:0 auto;}
+  .atmosphere-item{border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.3);cursor:pointer;position:relative;aspect-ratio:4/3;}
+  .atmosphere-item img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+  .atmosphere-item:hover img{transform:scale(1.05);}
+  .atmosphere-item .caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);padding:20px 16px 12px;font-weight:600;font-size:.95rem;}
+
+  @media(max-width:1100px) and (min-width:901px){
+    header{padding:10px 2%;}
+    nav a{padding:5px 6px;font-size:.72rem;}
+    .logo{font-size:.95rem;}
+    .lang-switch button{padding:4px 7px;font-size:.68rem;}
+    .account-btn{padding:6px 10px;font-size:.72rem;}
+    .btn{padding:8px 12px;font-size:.75rem;}
+  }
+
+  @media(max-width:900px){
+    :root{--header-h:60px;--gap-1cm:0.8cm;}
+    nav{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(31,74,55,.98);padding:80px 20px 20px;transform:translateX(100%);transition:transform .3s;z-index:999;overflow-y:auto;}
+    nav.open{transform:translateX(0);}
+    nav ul{flex-direction:column;gap:0;flex:initial;}
+    nav a{display:block;padding:16px 18px;font-size:1.1rem;border-bottom:1px solid #ffffff1a;border-radius:0;text-align:left;}
+    .burger{display:block;}
+    .header-right .btn:not(.account-btn){display:none;}
+    .about-grid,.split,.contacts-grid,.grid-2,.extras{grid-template-columns:1fr;}
+    .booking-form{padding:24px 20px;}
+    .account-header{flex-direction:column;text-align:center;}
+    section{padding:40px 5%;}
+  }
+
+  @media(min-width:1400px){
+    section{padding:80px 8%;}
+    .page:not(#page-home) > section:not(.restaurant-hero){max-width:1300px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="showPage('page-home')">Днестровский <span>Берег</span></div>
+  <nav id="mainNav">
+    <ul>
+      <li><a class="nav-link" data-target="about" data-i18n="nav_about">О нас</a></li>
+      <li><a class="nav-link" data-target="rooms" data-i18n="nav_rooms">Размещение</a></li>
+      <li><a class="nav-link" data-target="restaurant-page" data-i18n="nav_restaurant">Ресторан</a></li>
+      <li><a class="nav-link" data-target="pool" data-i18n="nav_pool">Бассейн</a></li>
+      <li><a class="nav-link" data-target="mangal" data-i18n="nav_mangal">Мангал</a></li>
+      <li><a class="nav-link" data-target="gallery" data-i18n="nav_gallery">Галерея</a></li>
+      <li><a class="nav-link" data-target="reviews" data-i18n="nav_reviews">Отзывы</a></li>
+      <li><a class="nav-link" data-target="prices" data-i18n="nav_prices">Цены</a></li>
+      <li><a class="nav-link" data-target="booking" data-i18n="nav_booking">Бронирование</a></li>
+    </ul>
+  </nav>
+  <div class="header-right">
+    <div class="lang-switch" id="langSwitch">
+      <button type="button" data-lang="ru">RU</button>
+      <button type="button" data-lang="ro">RO</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <button class="account-btn" id="accountBtn">👤 <span data-i18n="login">Войти</span></button>
+    <button class="btn" onclick="showBooking()" data-i18n="btn_book">Забронировать</button>
+    <button class="burger" id="burgerBtn" aria-label="Меню">☰</button>
+  </div>
+</header>
+
+<div class="page active" id="page-home">
+  <section class="hero">
+    <h1 data-i18n="hero_title">Отдых на берегу Днестра — там, где время замедляется</h1>
+    <p data-i18n="hero_sub">Ресторан, гостиница, бассейн, сауна и уютные мангальные домики среди живописной природы Молдовы.</p>
+    <div class="buttons">
+      <button class="btn" onclick="showBooking()" data-i18n="btn_book">Забронировать</button>
+      <button class="btn btn-outline" onclick="scrollToId('rooms')" data-i18n="btn_services">Наши услуги</button>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-title"><h2 data-i18n="about_title">О нас</h2><p data-i18n="about_sub">Природа и комфорт</p></div>
+    <div class="about-grid">
+      <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="Берег" loading="lazy">
+      <div>
+        <h3 data-i18n="about_h3">Ваш идеальный отдых на Днестре</h3>
+        <p data-i18n="about_text">База отдыха «Днестровский Берег» на берегу реки Днестр.</p>
+        <ul>
+          <li data-i18n="about_li1">Живописный берег Днестра</li>
+          <li data-i18n="about_li2">Чистый воздух и тишина</li>
+          <li data-i18n="about_li3">Рыбалка и прогулки на лодках</li>
+          <li data-i18n="about_li4">Молдавская и европейская кухня</li>
+          <li data-i18n="about_li5">Отдых для всей семьи</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff;">
+    <div class="section-title"><h2 data-i18n="services_title">Наши услуги</h2><p data-i18n="services_sub">Всё для отдыха</p></div>
+    <div class="cards">
+      <div class="card" style="cursor:pointer" onclick="scrollToId('rooms')"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Гостиница" loading="lazy"><div class="card-body"><h3 data-i18n="srv_hotel">Гостиница</h3><p data-i18n="srv_hotel_p">Уютные номера с видом на реку.</p><span class="price" data-i18n="srv_hotel_price">от 700 MDL / ночь</span></div></div>
+      <div class="card" style="cursor:pointer" onclick="showRestaurant()"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Ресторан" loading="lazy"><div class="card-body"><h3 data-i18n="srv_rest">Ресторан</h3><p data-i18n="srv_rest_p">Молдавская и европейская кухня.</p><span class="price" data-i18n="srv_rest_price">~250 MDL</span></div></div>
+      <div class="card" style="cursor:pointer" onclick="scrollToId('pool')"><img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&w=800&q=80" alt="Бассейн" loading="lazy"><div class="card-body"><h3 data-i18n="srv_pool">Бассейн</h3><p data-i18n="srv_pool_p">Открытый подогреваемый.</p><span class="price" data-i18n="srv_pool_price">от 100 MDL</span></div></div>
+      <div class="card" style="cursor:pointer" onclick="scrollToId('pool')"><img src="https://images.unsplash.com/photo-1554188248-986adbb73be4?auto=format&fit=crop&w=800&q=80" alt="Сауна" loading="lazy"><div class="card-body"><h3 data-i18n="srv_sauna">Сауна</h3><p data-i18n="srv_sauna_p">Настоящая финская.</p><span class="price" data-i18n="srv_sauna_price">от 300 MDL / час</span></div></div>
+      <div class="card" style="cursor:pointer" onclick="scrollToId('mangal')"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Мангал" loading="lazy"><div class="card-body"><h3 data-i18n="srv_mangal">Мангальные домики</h3><p data-i18n="srv_mangal_p">Крытые беседки 6–20 человек.</p><span class="price" data-i18n="srv_mangal_price">от 200 MDL / час</span></div></div>
+    </div>
+  </section>
+
+  <section id="rooms" class="rooms">
+    <div class="section-title"><h2 data-i18n="rooms_title">Размещение</h2><p data-i18n="rooms_sub">Выберите номер</p></div>
+    <div class="room-grid">
+      <div class="room"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80" alt="Стандарт" loading="lazy"><div class="room-body"><h3 data-i18n="room1">Стандарт</h3><p class="features" data-i18n="room1_f">2 гостя · 18 м² · Wi-Fi</p><span class="price" data-i18n="room1_p">700 MDL / ночь</span></div></div>
+      <div class="room"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80" alt="Комфорт" loading="lazy"><div class="room-body"><h3 data-i18n="room2">Комфорт</h3><p class="features" data-i18n="room2_f">3 гостя · 26 м² · балкон</p><span class="price" data-i18n="room2_p">1100 MDL / ночь</span></div></div>
+      <div class="room"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Люкс" loading="lazy"><div class="room-body"><h3 data-i18n="room3">Люкс</h3><p class="features" data-i18n="room3_f">4 гостя · 40 м² · терраса</p><span class="price" data-i18n="room3_p">1800 MDL / ночь</span></div></div>
+      <div class="room"><img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=800&q=80" alt="Домик" loading="lazy"><div class="room-body"><h3 data-i18n="room4">Отдельный домик</h3><p class="features" data-i18n="room4_f">до 6 гостей · мангал</p><span class="price" data-i18n="room4_p">2400 MDL / ночь</span></div></div>
+    </div>
+  </section>
+
+  <section id="pool">
+    <div class="section-title"><h2 data-i18n="pool_title">Бассейн и сауна</h2><p data-i18n="pool_sub">Релакс</p></div>
+    <div class="split" style="margin-bottom:40px;">
+      <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=900&q=80" alt="Бассейн" loading="lazy">
+      <div><h3 data-i18n="pool_h3">Открытый бассейн</h3><p data-i18n="pool_p">Просторный подогреваемый бассейн.</p>
+        <ul>
+          <li data-i18n="pool_li1">Подогрев воды</li>
+          <li data-i18n="pool_li2">Шезлонги бесплатно</li>
+          <li data-i18n="pool_li3">Бар у бассейна</li>
+          <li data-i18n="pool_li4">Детская зона</li>
+          <li data-i18n="pool_li5">9:00–21:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="split">
+      <div><h3 data-i18n="sauna_h3">Финская сауна</h3><p data-i18n="sauna_p">Настоящая сауна на дровах.</p>
+        <ul>
+          <li data-i18n="sauna_li1">Парная на дровах</li>
+          <li data-i18n="sauna_li2">Комната отдыха</li>
+          <li data-i18n="sauna_li3">Купель</li>
+          <li data-i18n="sauna_li4">Ароматерапия</li>
+          <li data-i18n="sauna_li5">По часам</li>
+        </ul>
+      </div>
+      <img src="https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=900&q=80" alt="Сауна" loading="lazy">
+    </div>
+  </section>
+
+  <section id="mangal" class="mangal">
+    <div class="section-title"><h2 data-i18n="mangal_title">Мангальные домики</h2><p data-i18n="mangal_sub">Для встреч</p></div>
+    <div class="cards">
+      <div class="card"><img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80" alt="Малый" loading="lazy"><div class="card-body"><h3 data-i18n="mangal1">Малый домик</h3><p data-i18n="mangal1_p">До 6 человек</p><span class="price" data-i18n="mangal1_price">200 MDL / час</span></div></div>
+      <div class="card"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Средний" loading="lazy"><div class="card-body"><h3 data-i18n="mangal2">Средний домик</h3><p data-i18n="mangal2_p">До 12 человек</p><span class="price" data-i18n="mangal2_price">350 MDL / час</span></div></div>
+      <div class="card"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Большой" loading="lazy"><div class="card-body"><h3 data-i18n="mangal3">Большой домик</h3><p data-i18n="mangal3_p">До 20 человек</p><span class="price" data-i18n="mangal3_price">500 MDL / час</span></div></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <div class="section-title"><h2 data-i18n="gallery_title">Галерея</h2><p data-i18n="gallery_sub">Наша территория</p></div>
+    <div class="gallery-grid" id="galleryGrid">
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80" alt="Природа" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Гостиница" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&w=800&q=80" alt="Бассейн" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Ресторан" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=800&q=80" alt="Сауна" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Мангал" loading="lazy">
+    </div>
+  </section>
+
+  <section id="reviews" class="reviews">
+    <div class="section-title"><h2 data-i18n="reviews_title">Отзывы</h2><p data-i18n="reviews_sub">Что говорят гости</p></div>
+    <div class="reviews-summary">
+      <div class="score" id="avgScore">4.8</div>
+      <div><div class="stars">★★★★★</div><div class="count" id="reviewsCount" data-i18n="reviews_count">отзывов</div></div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"><div class="loader">Загрузка...</div></div>
+  </section>
+
+  <section id="prices">
+    <div class="section-title"><h2 data-i18n="prices_title">Цены</h2><p data-i18n="prices_sub">Прозрачные</p></div>
+    <table class="price-table">
+      <thead><tr><th data-i18n="th_service">Услуга</th><th data-i18n="th_price">Цена</th></tr></thead>
+      <tbody>
+        <tr><td data-i18n="p1">Номер «Стандарт»</td><td>700 MDL</td></tr>
+        <tr><td data-i18n="p2">Номер «Комфорт»</td><td>1100 MDL</td></tr>
+        <tr><td data-i18n="p3">Номер «Люкс»</td><td>1800 MDL</td></tr>
+        <tr><td data-i18n="p4">Отдельный домик</td><td>2400 MDL</td></tr>
+        <tr><td data-i18n="srv_pool">Бассейн</td><td>100 MDL</td></tr>
+        <tr><td data-i18n="srv_sauna">Сауна</td><td>300 MDL / час</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="contacts">
+    <div class="section-title"><h2 data-i18n="contacts_title">Контакты</h2><p data-i18n="contacts_sub">Как нас найти</p></div>
+    <div class="contacts-grid">
+      <div>
+        <div class="contact-item"><div class="ico">📍</div><div><strong data-i18n="c_addr_l">Адрес</strong><span data-i18n="c_addr_v">с. Варница, берег Днестра, Молдова</span></div></div>
+        <div class="contact-item"><div class="ico">📞</div><div><strong data-i18n="c_phone_l">Телефон</strong>+373 (XX) XXX-XX-XX</div></div>
+        <div class="contact-item"><div class="ico">✉️</div><div><strong data-i18n="c_email_l">Email</strong>info@dnestrbereg.md</div></div>
+        <div class="contact-item"><div class="ico">🕘</div><div><strong data-i18n="c_hours_l">Режим работы</strong><span data-i18n="c_hours_v">Ежедневно 9:00–22:00</span></div></div>
+      </div>
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=29.5%2C46.9%2C29.7%2C47.1&layer=mapnik" loading="lazy" title="Карта"></iframe>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <h2 data-i18n="nl_title">🎁 Скидка 10% на первое бронирование</h2>
+    <p data-i18n="nl_sub">Подпишитесь на рассылку — узнавайте первыми об акциях.</p>
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" name="email" placeholder="ваш@email.com" required>
+      <button type="submit" data-i18n="nl_btn">Подписаться</button>
+    </form>
+    <div class="newsletter-success" id="nlSuccess" data-i18n="nl_success">✅ Спасибо!</div>
+  </section>
+
+  <footer><p data-i18n="footer_text">© 2025 База отдыха «Днестровский Берег». Все права защищены.</p></footer>
+</div>
+
+<div class="page" id="page-restaurant">
+  <section class="restaurant-hero">
+    <h1 data-i18n="rest_hero_title">Ресторан «Днестровский Берег»</h1>
+    <p data-i18n="rest_hero_sub">Молдавская и европейская кухня на берегу Днестра. Свежие продукты, блюда на мангале, домашние вина и панорамный вид.</p>
+    <div class="buttons">
+      <button class="btn" onclick="showBooking()" data-i18n="rest_book_btn">Забронировать столик</button>
+      <button class="btn btn-outline" onclick="scrollToId('rest-menu')" data-i18n="rest_menu_btn">Смотреть меню</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="restaurant-info">
+      <div class="info-card"><span class="ico">🕐</span><div class="lbl" data-i18n="rest_info_hours">Часы работы</div><div class="val" data-i18n="rest_info_hours_v">9:00 – 23:00</div></div>
+      <div class="info-card"><span class="ico">👥</span><div class="lbl" data-i18n="rest_info_cap">Вместимость</div><div class="val" data-i18n="rest_info_cap_v">до 120 гостей</div></div>
+      <div class="info-card"><span class="ico">🌿</span><div class="lbl" data-i18n="rest_info_terrace">Терраса</div><div class="val" data-i18n="rest_info_terrace_v">с видом на Днестр</div></div>
+      <div class="info-card"><span class="ico">🍽️</span><div class="lbl" data-i18n="rest_info_cuisine">Кухня</div><div class="val" data-i18n="rest_info_cuisine_v">Молдавская · Европейская</div></div>
+    </div>
+  </section>
+
+  <section id="rest-menu" class="menu-section">
+    <div class="section-title">
+      <h2 data-i18n="rest_menu_title">Наше меню</h2>
+      <p data-i18n="rest_menu_sub">Блюда из свежих местных продуктов, приготовленные с душой</p>
+    </div>
+
+    <div class="menu-tabs" id="menuTabs">
+      <button class="menu-tab active" data-menu="breakfast" data-i18n="rest_cat1">🌅 Завтраки</button>
+      <button class="menu-tab" data-menu="salads" data-i18n="rest_cat2">🥗 Салаты</button>
+      <button class="menu-tab" data-menu="hot" data-i18n="rest_cat3">🔥 Горячее</button>
+      <button class="menu-tab" data-menu="grill" data-i18n="rest_cat4">🍖 Мангал</button>
+      <button class="menu-tab" data-menu="desserts" data-i18n="rest_cat5">🍰 Десерты</button>
+      <button class="menu-tab" data-menu="drinks" data-i18n="rest_cat6">🍷 Напитки</button>
+    </div>
+
+    <div class="menu-panel active" id="menu-breakfast">
+      <div class="menu-item"><div class="details"><h4>Омлет с овощами</h4><p>3 яйца, помидоры, перец, зелень, тост</p></div><div class="price-tag">85 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Сырники со сметаной</h4><p>Домашние, с вишнёвым вареньем</p></div><div class="price-tag">95 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Каша овсяная с ягодами</h4><p>На молоке, с мёдом и свежими ягодами</p></div><div class="price-tag">75 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Плацинда с брынзой</h4><p>Традиционная молдавская лепёшка</p></div><div class="price-tag">65 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Континентальный завтрак</h4><p>Круассан, масло, джем, кофе, сок</p></div><div class="price-tag">120 MDL</div></div>
+    </div>
+
+    <div class="menu-panel" id="menu-salads">
+      <div class="menu-item"><div class="details"><h4>Салат «Днестровский»</h4><p>Свежие овощи, брынза, орехи, оливковое масло</p></div><div class="price-tag">110 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Греческий салат</h4><p>Помидоры, огурцы, фета, маслины, лук</p></div><div class="price-tag">125 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Цезарь с курицей</h4><p>Романо, курица гриль, пармезан, сухарики</p></div><div class="price-tag">145 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Витаминный</h4><p>Капуста, морковь, яблоко, лимонный сок</p></div><div class="price-tag">85 MDL</div></div>
+    </div>
+
+    <div class="menu-panel" id="menu-hot">
+      <div class="menu-item"><div class="details"><h4>Мамалыга с брынзой и сметаной</h4><p>Традиционное молдавское блюдо</p></div><div class="price-tag">135 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Голубцы молдавские</h4><p>С мясом и рисом, в томатном соусе</p></div><div class="price-tag">165 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Плацинда с картофелем</h4><p>Домашняя, с чесночным соусом</p></div><div class="price-tag">85 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Курица в вине</h4><p>С картофелем и овощами</p></div><div class="price-tag">195 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Паста карбонара</h4><p>Спагетти, бекон, сливочный соус, пармезан</p></div><div class="price-tag">175 MDL</div></div>
+    </div>
+
+    <div class="menu-panel" id="menu-grill">
+      <div class="menu-item"><div class="details"><h4>Шашлык из свинины</h4><p>С луком и свежими овощами</p></div><div class="price-tag">220 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Шашлык из курицы</h4><p>Маринованный, с соусом ткемали</p></div><div class="price-tag">180 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Стейк из говядины</h4><p>На гриле, с картофелем по-деревенски</p></div><div class="price-tag">320 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Рыба на гриле</h4><p>Свежий карп или судак из Днестра</p></div><div class="price-tag">240 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Овощи на гриле</h4><p>Баклажаны, перец, помидоры, цукини</p></div><div class="price-tag">140 MDL</div></div>
+    </div>
+
+    <div class="menu-panel" id="menu-desserts">
+      <div class="menu-item"><div class="details"><h4>Домашний торт «Медовик»</h4><p>Классический, со сметанным кремом</p></div><div class="price-tag">85 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Панна котта</h4><p>С ягодным соусом</p></div><div class="price-tag">95 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Мороженое ассорти</h4><p>3 шарика: ваниль, шоколад, клубника</p></div><div class="price-tag">70 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Плацинда с яблоками</h4><p>С корицей и мёдом</p></div><div class="price-tag">75 MDL</div></div>
+    </div>
+
+    <div class="menu-panel" id="menu-drinks">
+      <div class="menu-item"><div class="details"><h4>Домашнее вино (красное/белое)</h4><p>Из местных сортов винограда</p></div><div class="price-tag">45 MDL / 150 мл</div></div>
+      <div class="menu-item"><div class="details"><h4>Ракия молдавская</h4><p>Домашняя, 40°</p></div><div class="price-tag">35 MDL / 50 мл</div></div>
+      <div class="menu-item"><div class="details"><h4>Компот из свежих фруктов</h4><p>Домашний, без сахара</p></div><div class="price-tag">40 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Свежевыжатый сок</h4><p>Апельсин / яблоко / морковь</p></div><div class="price-tag">55 MDL</div></div>
+      <div class="menu-item"><div class="details"><h4>Кофе / Чай</h4><p>Эспрессо, американо, капучино / чёрный, зелёный, травяной</p></div><div class="price-tag">35–55 MDL</div></div>
+    </div>
+  </section>
+
+  <section style="background:#fff;">
+    <div class="section-title">
+      <h2 data-i18n="rest_dishes_title">Наши блюда</h2>
+      <p data-i18n="rest_dishes_sub">Загляните в нашу кухню</p>
+    </div>
+    <div class="dishes-grid" id="dishesGrid">
+      <div class="dish"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" alt="Шашлык" loading="lazy"><div class="overlay"><h4>Шашлык на мангале</h4></div></div>
+      <div class="dish"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Стейк" loading="lazy"><div class="overlay"><h4>Стейк из говядины</h4></div></div>
+      <div class="dish"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Салат" loading="lazy"><div class="overlay"><h4>Свежие салаты</h4></div></div>
+      <div class="dish"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Гриль" loading="lazy"><div class="overlay"><h4>Блюда на гриле</h4></div></div>
+      <div class="dish"><img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80" alt="Десерт" loading="lazy"><div class="overlay"><h4>Домашние десерты</h4></div></div>
+      <div class="dish"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" alt="Вино" loading="lazy"><div class="overlay"><h4>Молдавские вина</h4></div></div>
+    </div>
+  </section>
+
+  <section class="atmosphere">
+    <div class="section-title">
+      <h2 data-i18n="rest_atm_title">Атмосфера</h2>
+      <p data-i18n="rest_atm_sub">Уютный зал, летняя терраса и вид на Днестр</p>
+    </div>
+    <div class="atmosphere-grid">
+      <div class="atmosphere-item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Зал" loading="lazy"><div class="caption" data-i18n="rest_atm1">Основной зал</div></div>
+      <div class="atmosphere-item"><img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80" alt="Терраса" loading="lazy"><div class="caption" data-i18n="rest_atm2">Летняя терраса</div></div>
+      <div class="atmosphere-item"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="Атмосфера" loading="lazy"><div class="caption" data-i18n="rest_atm3">Атмосфера вечера</div></div>
+    </div>
+  </section>
+
+  <footer><p data-i18n="footer_text">© 2025 База отдыха «Днестровский Берег». Все права защищены.</p></footer>
+</div>
+
+<div class="page" id="page-booking">
+  <div class="booking-page">
+    <div class="page-title"><h1 data-i18n="book_title">Бронирование</h1><p data-i18n="book_sub">Заполните форму — мы свяжемся с вами в течение часа.</p></div>
+    <form class="booking-form" id="bookingForm">
+      <div class="form-section">
+        <h2><span class="num">1</span> <span data-i18n="sec1">Ваши контакты</span></h2>
+        <div class="grid-2">
+          <div class="field"><label data-i18n="f_name">Имя *</label><input type="text" name="name" id="bk_name" required></div>
+          <div class="field"><label data-i18n="f_phone">Телефон *</label><input type="tel" name="phone" id="bk_phone" required></div>
+        </div>
+        <div class="field"><label data-i18n="f_email">Email</label><input type="email" name="email" id="bk_email"></div>
+      </div>
+      <div class="form-section">
+        <h2><span class="num">2</span> <span data-i18n="sec2">Даты и гости</span></h2>
+        <div class="grid-2">
+          <div class="field"><label data-i18n="f_in">Дата заезда *</label><input type="date" name="checkin" id="checkin" required></div>
+          <div class="field"><label data-i18n="f_out">Дата выезда *</label><input type="date" name="checkout" id="checkout" required></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label data-i18n="f_adults">Взрослые</label><input type="number" name="adults" min="1" max="20" value="2"></div>
+          <div class="field"><label data-i18n="f_children">Дети</label><input type="number" name="children" min="0" max="10" value="0"></div>
+        </div>
+        <div class="calendar">
+          <div class="calendar-header">
+            <button type="button" id="calPrev">‹</button>
+            <div class="month" id="calMonth">—</div>
+            <button type="button" id="calNext">›</button>
+          </div>
+          <div class="calendar-grid" id="calGrid"></div>
+          <div class="cal-legend">
+            <span><span class="dot avail"></span> <span data-i18n="cal_avail">Свободно</span></span>
+            <span><span class="dot bkd"></span> <span data-i18n="cal_booked">Занято</span></span>
+            <span><span class="dot sel"></span> <span data-i18n="cal_sel">Выбрано</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <h2><span class="num">3</span> <span data-i18n="sec3">Тип размещения</span></h2>
+        <div class="field">
+          <label data-i18n="f_room">Выберите вариант *</label>
+          <select name="room" id="room" required>
+            <option value="" data-i18n="opt_choose">— Выберите —</option>
+            <option value="700" data-name-ru="Стандарт" data-name-ro="Standard" data-name-en="Standard">Standard — 700 MDL</option>
+            <option value="1100" data-name-ru="Комфорт" data-name-ro="Comfort" data-name-en="Comfort">Comfort — 1100 MDL</option>
+            <option value="1800" data-name-ru="Люкс" data-name-ro="Lux" data-name-en="Luxury">Luxury — 1800 MDL</option>
+            <option value="2400" data-name-ru="Отдельный домик" data-name-ro="Căsuță separată" data-name-en="Separate cottage">Cottage — 2400 MDL</option>
+          </select>
+        </div>
+        <div class="field"><label data-i18n="f_nights">Количество ночей</label><input type="number" id="nights" min="1" value="1" readonly></div>
+      </div>
+      <div class="form-section">
+        <h2><span class="num">4</span> <span data-i18n="sec4">Доп. услуги</span></h2>
+        <div class="extras">
+          <label class="extra-item"><input type="checkbox" class="extra" value="300" data-name-ru="Сауна" data-name-ro="Saună" data-name-en="Sauna"><span data-i18n="ex_sauna">Сауна — 300 MDL</span></label>
+          <label class="extra-item"><input type="checkbox" class="extra" value="200" data-name-ru="Мангал малый" data-name-ro="Grătar mic" data-name-en="Small BBQ"><span data-i18n="ex_m1">Мангал малый — 200 MDL</span></label>
+          <label class="extra-item"><input type="checkbox" class="extra" value="350" data-name-ru="Мангал средний" data-name-ro="Grătar mediu" data-name-en="Medium BBQ"><span data-i18n="ex_m2">Мангал средний — 350 MDL</span></label>
+          <label class="extra-item"><input type="checkbox" class="extra" value="500" data-name-ru="Мангал большой" data-name-ro="Grătar mare" data-name-en="Large BBQ"><span data-i18n="ex_m3">Мангал большой — 500 MDL</span></label>
+          <label class="extra-item"><input type="checkbox" class="extra" value="100" data-name-ru="Бассейн взрослый" data-name-ro="Piscină adult" data-name-en="Pool adult"><span data-i18n="ex_pa">Бассейн взр. — 100 MDL</span></label>
+          <label class="extra-item"><input type="checkbox" class="extra" value="50" data-name-ru="Бассейн детский" data-name-ro="Piscină copil" data-name-en="Pool child"><span data-i18n="ex_pc">Бассейн дет. — 50 MDL</span></label>
+        </div>
+      </div>
+      <div class="form-section">
+        <h2><span class="num">5</span> <span data-i18n="sec5">Пожелания</span></h2>
+        <div class="field"><label data-i18n="f_comment">Комментарий</label><textarea name="comment" id="bk_comment" data-i18n-ph="ph_comment" placeholder="Особые пожелания..."></textarea></div>
+      </div>
+      <div class="summary">
+        <h3 data-i18n="sum_title">Предварительный расчёт</h3>
+        <div id="summaryRows"></div>
+        <div class="summary-total"><span data-i18n="sum_total">Итого:</span><strong id="totalPrice">0 MDL</strong></div>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn" data-i18n="btn_send">Отправить заявку</button>
+    </form>
+    <div class="success" id="successMsg">
+      <div class="check">✓</div>
+      <h2 data-i18n="ok_title">Заявка отправлена!</h2>
+      <p data-i18n="ok_text">Спасибо! Мы свяжемся с вами в течение часа.</p>
+      <button class="submit-btn" style="width:auto;padding:14px 40px;display:inline-block;" onclick="showAccount()" data-i18n="ok_account">В личный кабинет</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-auth">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-error" id="authError"></div>
+      <div class="auth-msg" id="authMsg"></div>
+      <div id="loginForm">
+        <h1 data-i18n="login_title">Вход</h1>
+        <p class="subtitle" data-i18n="login_sub">Войдите в аккаунт</p>
+        <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@example.com"></div>
+        <div class="field">
+          <label data-i18n="f_password">Пароль</label>
+          <div class="password-wrap">
+            <button type="button" class="pass-toggle" onclick="togglePass('loginPassword', this)" title="Показать пароль">👁</button>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <button class="auth-btn" onclick="handleLogin()" data-i18n="login_btn">Войти</button>
+        <p class="auth-switch"><span data-i18n="no_account">Нет аккаунта?</span> <a onclick="toggleAuth()" data-i18n="register_link">Зарегистрироваться</a></p>
+      </div>
+      <div id="registerForm" style="display:none;">
+        <h1 data-i18n="register_title">Регистрация</h1>
+        <p class="subtitle" data-i18n="register_sub">10% скидка на первое бронирование</p>
+        <div class="field"><label data-i18n="f_name">Имя *</label><input type="text" id="regName"></div>
+        <div class="field"><label data-i18n="f_email">Email *</label><input type="email" id="regEmail"></div>
+        <div class="field"><label data-i18n="f_phone">Телефон</label><input type="tel" id="regPhone"></div>
+        <div class="field"><label data-i18n="f_birthday">🎂 Дата рождения</label><input type="date" id="regBirthday"></div>
+        <div class="field">
+          <label data-i18n="f_password">Пароль *</label>
+          <div class="password-wrap">
+            <button type="button" class="pass-toggle" onclick="togglePass('regPassword', this)" title="Показать пароль">👁</button>
+            <input type="password" id="regPassword" placeholder="мин. 6 символов">
+          </div>
+        </div>
+        <button class="auth-btn" onclick="handleRegister()" data-i18n="register_btn">Создать аккаунт</button>
+        <p class="auth-switch"><span data-i18n="have_account">Есть аккаунт?</span> <a onclick="toggleAuth()" data-i18n="login_link">Войти</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-account">
+  <div class="account-page">
+    <div class="account-header">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="avatar-big" id="userAvatar">?</div>
+        <div><h1 id="userName">Гость</h1><p id="userEmail">email@example.com</p></div>
+      </div>
+      <button class="btn btn-outline" onclick="handleLogout()" data-i18n="logout">Выйти</button>
+    </div>
+    <div class="bonus-card">
+      <div><div class="lbl" data-i18n="bonus_label">Ваши бонусы</div><div class="val" id="bonusVal">0</div></div>
+      <div style="max-width:320px;font-size:.9rem;"><span data-i18n="bonus_hint">5% за каждое бронирование.</span></div>
+    </div>
+    <div class="account-tabs">
+      <button class="account-tab active" data-tab="mybookings" data-i18n="my_bookings">📋 Мои брони</button>
+      <button class="account-tab" data-tab="myreviews" data-i18n="my_reviews">⭐ Мои отзывы</button>
+      <button class="account-tab" data-tab="profile" data-i18n="profile">👤 Профиль</button>
+    </div>
+    <div class="account-panel active" id="panel-mybookings"><div id="myBookingsList"><div class="loader">Загрузка...</div></div></div>
+    <div class="account-panel" id="panel-myreviews"><div id="myReviewsList"><div class="loader">Загрузка...</div></div></div>
+    <div class="account-panel" id="panel-profile">
+      <div class="admin-box">
+        <h2 data-i18n="profile_title">Мой профиль</h2>
+        <div class="field"><label data-i18n="f_name">Имя</label><input type="text" id="profName"></div>
+        <div class="field"><label data-i18n="f_email">Email</label><input type="email" id="profEmail" disabled></div>
+        <div class="field"><label data-i18n="f_phone">Телефон</label><input type="tel" id="profPhone"></div>
+        <div class="field"><label data-i18n="f_birthday">🎂 Дата рождения</label><input type="date" id="profBirthday"></div>
+        <button class="btn" onclick="saveProfile()" data-i18n="save">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-admin">
+  <div class="admin-page">
+    <div class="admin-header">
+      <h1>🔐 <span data-i18n="admin_title">Админ-панель</span></h1>
+      <button class="btn" onclick="showPage('page-home')" data-i18n="admin_back">← На сайт</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="stats" data-i18n="admin_tab_stats">📊 Статистика</button>
+      <button class="admin-tab" data-tab="requests" data-i18n="admin_tab_req">📋 Заявки</button>
+      <button class="admin-tab" data-tab="users" data-i18n="admin_tab_users">👥 Гости</button>
+      <button class="admin-tab" data-tab="dates" data-i18n="admin_tab_dates">📅 Даты</button>
+    </div>
+    <div class="admin-panel active" id="panel-stats">
+      <div class="admin-box">
+        <h2 data-i18n="admin_stats_title">Общая статистика</h2>
+        <div class="stats-grid" id="statsGrid"><div class="loader">Загрузка...</div></div>
+      </div>
+    </div>
+    <div class="admin-panel" id="panel-requests"><div class="admin-box"><h2 data-i18n="admin_req_title">Заявки</h2><div id="requestsList"><div class="loader">Загрузка...</div></div></div></div>
+    <div class="admin-panel" id="panel-users"><div class="admin-box"><h2 data-i18n="admin_users_title">Гости</h2><div id="usersList"><div class="loader">Загрузка...</div></div></div></div>
+    <div class="admin-panel" id="panel-dates"><div class="admin-box"><h2 data-i18n="admin_dates_title">Занятые даты</h2>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+        <input type="date" id="newBookedDate" class="admin-input" style="flex:1;min-width:180px;margin:0;">
+        <button class="btn" onclick="addBookedDate()" data-i18n="admin_add_date">+ Добавить</button>
+      </div>
+      <div id="bookedDatesList"></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" id="lbClose">×</button>
+  <button class="nav-btn prev" id="lbPrev">‹</button>
+  <img src="" alt="" id="lbImg">
+  <button class="nav-btn next" id="lbNext">›</button>
+</div>
+
+<script>
+var SUPABASE_URL = 'YOUR_SUPABASE_URL';
+var SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+var ADMIN_PASSWORD = 'admin123';
+
+var translations = {
+  ru: {
+    login:'Войти', btn_book:'Забронировать', btn_services:'Наши услуги',
+    nav_about:'О нас', nav_rooms:'Размещение', nav_restaurant:'Ресторан', nav_pool:'Бассейн', nav_mangal:'Мангал', nav_gallery:'Галерея', nav_reviews:'Отзывы', nav_prices:'Цены', nav_booking:'Бронирование',
+    hero_title:'Отдых на берегу Днестра — там, где время замедляется',
+    hero_sub:'Ресторан, гостиница, бассейн, сауна и уютные мангальные домики среди живописной природы Молдовы.',
+    about_title:'О нас', about_sub:'Природа и комфорт', about_h3:'Ваш идеальный отдых на Днестре',
+    about_text:'База отдыха «Днестровский Берег» на берегу реки Днестр.',
+    about_li1:'Живописный берег Днестра', about_li2:'Чистый воздух и тишина', about_li3:'Рыбалка и прогулки на лодках', about_li4:'Молдавская и европейская кухня', about_li5:'Отдых для всей семьи',
+    services_title:'Наши услуги', services_sub:'Всё для отдыха',
+    srv_hotel:'Гостиница', srv_hotel_p:'Уютные номера с видом на реку.', srv_hotel_price:'от 700 MDL / ночь',
+    srv_rest:'Ресторан', srv_rest_p:'Молдавская и европейская кухня.', srv_rest_price:'~250 MDL',
+    srv_pool:'Бассейн', srv_pool_p:'Открытый подогреваемый.', srv_pool_price:'от 100 MDL',
+    srv_sauna:'Сауна', srv_sauna_p:'Настоящая финская.', srv_sauna_price:'от 300 MDL / час',
+    srv_mangal:'Мангальные домики', srv_mangal_p:'Крытые беседки 6–20 человек.', srv_mangal_price:'от 200 MDL / час',
+    rooms_title:'Размещение', rooms_sub:'Выберите номер',
+    room1:'Стандарт', room1_f:'2 гостя · 18 м² · Wi-Fi', room1_p:'700 MDL / ночь',
+    room2:'Комфорт', room2_f:'3 гостя · 26 м² · балкон', room2_p:'1100 MDL / ночь',
+    room3:'Люкс', room3_f:'4 гостя · 40 м² · терраса', room3_p:'1800 MDL / ночь',
+    room4:'Отдельный домик', room4_f:'до 6 гостей · мангал', room4_p:'2400 MDL / ночь',
+    pool_title:'Бассейн и сауна', pool_sub:'Релакс',
+    pool_h3:'Открытый бассейн', pool_p:'Просторный подогреваемый бассейн.',
+    pool_li1:'Подогрев воды', pool_li2:'Шезлонги бесплатно', pool_li3:'Бар у бассейна', pool_li4:'Детская зона', pool_li5:'9:00–21:00',
+    sauna_h3:'Финская сауна', sauna_p:'Настоящая сауна на дровах.',
+    sauna_li1:'Парная на дровах', sauna_li2:'Комната отдыха', sauna_li3:'Купель', sauna_li4:'Ароматерапия', sauna_li5:'По часам',
+    mangal_title:'Мангальные домики', mangal_sub:'Для встреч',
+    mangal1:'Малый домик', mangal1_p:'До 6 человек', mangal1_price:'200 MDL / час',
+    mangal2:'Средний домик', mangal2_p:'До 12 человек', mangal2_price:'350 MDL / час',
+    mangal3:'Большой домик', mangal3_p:'До 20 человек', mangal3_price:'500 MDL / час',
+    gallery_title:'Галерея', gallery_sub:'Наша территория',
+    reviews_title:'Отзывы', reviews_sub:'Что говорят гости', reviews_count:'отзывов',
+    prices_title:'Цены', prices_sub:'Прозрачные', th_service:'Услуга', th_price:'Цена',
+    p1:'Номер «Стандарт»', p2:'Номер «Комфорт»', p3:'Номер «Люкс»', p4:'Отдельный домик',
+    contacts_title:'Контакты', contacts_sub:'Как нас найти',
+    c_addr_l:'Адрес', c_addr_v:'с. Варница, берег Днестра, Молдова',
+    c_phone_l:'Телефон', c_email_l:'Email', c_hours_l:'Режим работы', c_hours_v:'Ежедневно 9:00–22:00',
+    footer_text:'© 2025 База отдыха «Днестровский Берег». Все права защищены.',
+    nl_title:'🎁 Скидка 10% на первое бронирование', nl_sub:'Подпишитесь на рассылку — узнавайте первыми об акциях.', nl_btn:'Подписаться', nl_success:'✅ Спасибо!',
+    book_title:'Бронирование', book_sub:'Заполните форму — мы свяжемся с вами в течение часа.',
+    sec1:'Ваши контакты', sec2:'Даты и гости', sec3:'Тип размещения', sec4:'Доп. услуги', sec5:'Пожелания',
+    f_name:'Имя *', f_phone:'Телефон *', f_email:'Email', f_in:'Дата заезда *', f_out:'Дата выезда *',
+    f_adults:'Взрослые', f_children:'Дети', f_room:'Выберите вариант *', f_nights:'Количество ночей', f_comment:'Комментарий', f_password:'Пароль', f_birthday:'🎂 Дата рождения',
+    ph_comment:'Особые пожелания...', opt_choose:'— Выберите —',
+    ex_sauna:'Сауна — 300 MDL', ex_m1:'Мангал малый — 200 MDL', ex_m2:'Мангал средний — 350 MDL', ex_m3:'Мангал большой — 500 MDL', ex_pa:'Бассейн взр. — 100 MDL', ex_pc:'Бассейн дет. — 50 MDL',
+    sum_title:'Предварительный расчёт', sum_total:'Итого:', btn_send:'Отправить заявку',
+    ok_title:'Заявка отправлена!', ok_text:'Спасибо! Мы свяжемся с вами в течение часа.', ok_account:'В личный кабинет',
+    cal_avail:'Свободно', cal_booked:'Занято', cal_sel:'Выбрано',
+    login_title:'Вход', login_sub:'Войдите в аккаунт', login_btn:'Войти', no_account:'Нет аккаунта?', register_link:'Зарегистрироваться',
+    register_title:'Регистрация', register_sub:'10% скидка на первое бронирование', register_btn:'Создать аккаунт', have_account:'Есть аккаунт?', login_link:'Войти',
+    logout:'Выйти', my_bookings:'📋 Мои брони', my_reviews:'⭐ Мои отзывы', profile:'👤 Профиль', profile_title:'Мой профиль', save:'Сохранить',
+    bonus_label:'Ваши бонусы', bonus_hint:'5% за каждое бронирование.',
+    admin_title:'Админ-панель', admin_back:'← На сайт',
+    admin_tab_stats:'📊 Статистика', admin_tab_req:'📋 Заявки', admin_tab_users:'👥 Гости', admin_tab_dates:'📅 Даты',
+    admin_stats_title:'Общая статистика', admin_req_title:'Заявки', admin_users_title:'Гости', admin_dates_title:'Занятые даты', admin_add_date:'+ Добавить',
+    rest_hero_title:'Ресторан «Днестровский Берег»',
+    rest_hero_sub:'Молдавская и европейская кухня на берегу Днестра. Свежие продукты, блюда на мангале, домашние вина и панорамный вид.',
+    rest_book_btn:'Забронировать столик', rest_menu_btn:'Смотреть меню',
+    rest_info_hours:'Часы работы', rest_info_hours_v:'9:00 – 23:00',
+    rest_info_cap:'Вместимость', rest_info_cap_v:'до 120 гостей',
+    rest_info_terrace:'Терраса', rest_info_terrace_v:'с видом на Днестр',
+    rest_info_cuisine:'Кухня', rest_info_cuisine_v:'Молдавская · Европейская',
+    rest_menu_title:'Наше меню', rest_menu_sub:'Блюда из свежих местных продуктов, приготовленные с душой',
+    rest_cat1:'🌅 Завтраки', rest_cat2:'🥗 Салаты', rest_cat3:'🔥 Горячее', rest_cat4:'🍖 Мангал', rest_cat5:'🍰 Десерты', rest_cat6:'🍷 Напитки',
+    rest_dishes_title:'Наши блюда', rest_dishes_sub:'Загляните в нашу кухню',
+    rest_atm_title:'Атмосфера', rest_atm_sub:'Уютный зал, летняя терраса и вид на Днестр',
+    rest_atm1:'Основной зал', rest_atm2:'Летняя терраса', rest_atm3:'Атмосфера вечера'
+  },
+  ro: {
+    login:'Intră', btn_book:'Rezervă', btn_services:'Serviciile noastre',
+    nav_about:'Despre', nav_rooms:'Cazare', nav_restaurant:'Restaurant', nav_pool:'Piscină', nav_mangal:'Grătar', nav_gallery:'Galerie', nav_reviews:'Recenzii', nav_prices:'Prețuri', nav_booking:'Rezervare',
+    hero_title:'Odihnă pe malul Nistrului — acolo unde timpul încetinește',
+    hero_sub:'Restaurant, hotel, piscină, saună și căsuțe confortabile cu grătar.',
+    about_title:'Despre noi', about_sub:'Natura și confortul', about_h3:'Odihna ta ideală pe Nistru',
+    about_text:'Baza de odihnă „Malul Nistrului” pe malul râului Nistru.',
+    about_li1:'Mal pitoresc', about_li2:'Aer curat și liniște', about_li3:'Pescuit și plimbări cu barca', about_li4:'Bucătărie moldovenească și europeană', about_li5:'Odihnă pentru întreaga familie',
+    services_title:'Serviciile noastre', services_sub:'Totul pentru odihnă',
+    srv_hotel:'Hotel', srv_hotel_p:'Camere confortabile cu vedere la râu.', srv_hotel_price:'de la 700 MDL / noapte',
+    srv_rest:'Restaurant', srv_rest_p:'Bucătărie moldovenească și europeană.', srv_rest_price:'~250 MDL',
+    srv_pool:'Piscină', srv_pool_p:'Exterioară încălzită.', srv_pool_price:'de la 100 MDL',
+    srv_sauna:'Saună', srv_sauna_p:'Finlandeză autentică.', srv_sauna_price:'de la 300 MDL / oră',
+    srv_mangal:'Căsuțe cu grătar', srv_mangal_p:'Foișoare pentru 6–20 persoane.', srv_mangal_price:'de la 200 MDL / oră',
+    rooms_title:'Cazare', rooms_sub:'Alegeți camera',
+    room1:'Standard', room1_f:'2 persoane · 18 m² · Wi-Fi', room1_p:'700 MDL / noapte',
+    room2:'Comfort', room2_f:'3 persoane · 26 m² · balcon', room2_p:'1100 MDL / noapte',
+    room3:'Lux', room3_f:'4 persoane · 40 m² · terasă', room3_p:'1800 MDL / noapte',
+    room4:'Căsuță separată', room4_f:'până la 6 persoane · grătar', room4_p:'2400 MDL / noapte',
+    pool_title:'Piscină și saună', pool_sub:'Relax',
+    pool_h3:'Piscină exterioară', pool_p:'Piscină spațioasă încălzită.',
+    pool_li1:'Apă încălzită', pool_li2:'Șezlonguri gratuite', pool_li3:'Bar la piscină', pool_li4:'Zonă pentru copii', pool_li5:'9:00–21:00',
+    sauna_h3:'Saună finlandeză', sauna_p:'Saună autentică pe lemne.',
+    sauna_li1:'Cameră de aburi', sauna_li2:'Cameră de odihnă', sauna_li3:'Cuvă', sauna_li4:'Aromoterapie', sauna_li5:'Pe ore',
+    mangal_title:'Căsuțe cu grătar', mangal_sub:'Pentru întâlniri',
+    mangal1:'Căsuță mică', mangal1_p:'Până la 6 persoane', mangal1_price:'200 MDL / oră',
+    mangal2:'Căsuță medie', mangal2_p:'Până la 12 persoane', mangal2_price:'350 MDL / oră',
+    mangal3:'Căsuță mare', mangal3_p:'Până la 20 persoane', mangal3_price:'500 MDL / oră',
+    gallery_title:'Galerie', gallery_sub:'Teritoriul nostru',
+    reviews_title:'Recenzii', reviews_sub:'Ce spun oaspeții', reviews_count:'recenzii',
+    prices_title:'Prețuri', prices_sub:'Transparente', th_service:'Serviciu', th_price:'Preț',
+    p1:'Camera „Standard”', p2:'Camera „Comfort”', p3:'Camera „Lux”', p4:'Căsuță separată',
+    contacts_title:'Contacte', contacts_sub:'Cum ne găsiți',
+    c_addr_l:'Adresă', c_addr_v:'s. Varnița, malul Nistrului, Moldova',
+    c_phone_l:'Telefon', c_email_l:'Email', c_hours_l:'Program', c_hours_v:'Zilnic 9:00–22:00',
+    footer_text:'© 2025 Baza de odihnă „Malul Nistrului”.',
+    nl_title:'🎁 10% reducere la prima rezervare', nl_sub:'Abonați-vă la newsletter.', nl_btn:'Abonare', nl_success:'✅ Mulțumim!',
+    book_title:'Rezervare', book_sub:'Completați formularul.',
+    sec1:'Contactele dvs.', sec2:'Date și oaspeți', sec3:'Tip cazare', sec4:'Servicii suplimentare', sec5:'Preferințe',
+    f_name:'Nume *', f_phone:'Telefon *', f_email:'Email', f_in:'Data sosirii *', f_out:'Data plecării *',
+    f_adults:'Adulți', f_children:'Copii', f_room:'Alegeți opțiunea *', f_nights:'Număr de nopți', f_comment:'Comentariu', f_password:'Parolă', f_birthday:'🎂 Data nașterii',
+    ph_comment:'Preferințe speciale...', opt_choose:'— Alegeți —',
+    ex_sauna:'Saună — 300 MDL', ex_m1:'Grătar mic — 200 MDL', ex_m2:'Grătar mediu — 350 MDL', ex_m3:'Grătar mare — 500 MDL', ex_pa:'Piscină adult — 100 MDL', ex_pc:'Piscină copil — 50 MDL',
+    sum_title:'Calcul preliminar', sum_total:'Total:', btn_send:'Trimite cererea',
+    ok_title:'Cererea a fost trimisă!', ok_text:'Vă vom contacta în curând.', ok_account:'Contul meu',
+    cal_avail:'Liber', cal_booked:'Ocupat', cal_sel:'Selectat',
+    login_title:'Intrare', login_sub:'Intrați în cont', login_btn:'Intră', no_account:'Nu aveți cont?', register_link:'Înregistrare',
+    register_title:'Înregistrare', register_sub:'10% reducere la prima rezervare', register_btn:'Creează cont', have_account:'Aveți deja cont?', login_link:'Intră',
+    logout:'Ieșire', my_bookings:'📋 Rezervările mele', my_reviews:'⭐ Recenziile mele', profile:'👤 Profil', profile_title:'Profilul meu', save:'Salvează',
+    bonus_label:'Bonusurile dvs.', bonus_hint:'5% la fiecare rezervare.',
+    admin_title:'Panou de administrare', admin_back:'← Spre site',
+    admin_tab_stats:'📊 Statistici', admin_tab_req:'📋 Cereri', admin_tab_users:'👥 Oaspeți', admin_tab_dates:'📅 Date',
+    admin_stats_title:'Statistici generale', admin_req_title:'Cereri', admin_users_title:'Oaspeți', admin_dates_title:'Date ocupate', admin_add_date:'+ Adaugă',
+    rest_hero_title:'Restaurantul «Malul Nistrului»',
+    rest_hero_sub:'Bucătărie moldovenească și europeană pe malul Nistrului. Produse proaspete, preparate la grătar, vinuri de casă și vedere panoramică.',
+    rest_book_btn:'Rezervă o masă', rest_menu_btn:'Vezi meniul',
+    rest_info_hours:'Program', rest_info_hours_v:'9:00 – 23:00',
+    rest_info_cap:'Capacitate', rest_info_cap_v:'până la 120 persoane',
+    rest_info_terrace:'Terasă', rest_info_terrace_v:'cu vedere la Nistru',
+    rest_info_cuisine:'Bucătărie', rest_info_cuisine_v:'Moldovenească · Europeană',
+    rest_menu_title:'Meniul nostru', rest_menu_sub:'Preparate din produse locale proaspete, gătite cu suflet',
+    rest_cat1:'🌅 Mic dejun', rest_cat2:'🥗 Salate', rest_cat3:'🔥 Feluri principale', rest_cat4:'🍖 Grătar', rest_cat5:'🍰 Deserturi', rest_cat6:'🍷 Băuturi',
+    rest_dishes_title:'Preparatele noastre', rest_dishes_sub:'Aruncați o privire în bucătăria noastră',
+    rest_atm_title:'Atmosfera', rest_atm_sub:'Sală confortabilă, terasă de vară și vedere la Nistru',
+    rest_atm1:'Sala principală', rest_atm2:'Terasă de vară', rest_atm3:'Atmosfera de seară'
+  },
+  en: {
+    login:'Login', btn_book:'Book now', btn_services:'Our services',
+    nav_about:'About', nav_rooms:'Rooms', nav_restaurant:'Restaurant', nav_pool:'Pool', nav_mangal:'BBQ', nav_gallery:'Gallery', nav_reviews:'Reviews', nav_prices:'Prices', nav_booking:'Booking',
+    hero_title:'A getaway on the Dniester bank — where time slows down',
+    hero_sub:'Restaurant, hotel, pool, sauna and cozy BBQ houses surrounded by the picturesque nature of Moldova.',
+    about_title:'About us', about_sub:'Nature and comfort', about_h3:'Your ideal getaway on the Dniester',
+    about_text:'Dniester Bank resort on the bank of the Dniester River.',
+    about_li1:'Picturesque Dniester bank', about_li2:'Fresh air and tranquility', about_li3:'Fishing and boat rides', about_li4:'Moldovan and European cuisine', about_li5:'Holidays for the whole family',
+    services_title:'Our services', services_sub:'Everything for your holiday',
+    srv_hotel:'Hotel', srv_hotel_p:'Cozy rooms with river views.', srv_hotel_price:'from 700 MDL / night',
+    srv_rest:'Restaurant', srv_rest_p:'Moldovan and European cuisine.', srv_rest_price:'~250 MDL',
+    srv_pool:'Pool', srv_pool_p:'Outdoor heated pool.', srv_pool_price:'from 100 MDL',
+    srv_sauna:'Sauna', srv_sauna_p:'Authentic Finnish sauna.', srv_sauna_price:'from 300 MDL / hour',
+    srv_mangal:'BBQ houses', srv_mangal_p:'Covered gazebos for 6–20 people.', srv_mangal_price:'from 200 MDL / hour',
+    rooms_title:'Accommodation', rooms_sub:'Choose a room',
+    room1:'Standard', room1_f:'2 guests · 18 m² · Wi-Fi', room1_p:'700 MDL / night',
+    room2:'Comfort', room2_f:'3 guests · 26 m² · balcony', room2_p:'1100 MDL / night',
+    room3:'Luxury', room3_f:'4 guests · 40 m² · terrace', room3_p:'1800 MDL / night',
+    room4:'Separate cottage', room4_f:'up to 6 guests · BBQ', room4_p:'2400 MDL / night',
+    pool_title:'Pool & Sauna', pool_sub:'Relax',
+    pool_h3:'Outdoor pool', pool_p:'Spacious heated pool.',
+    pool_li1:'Heated water', pool_li2:'Free sun loungers', pool_li3:'Poolside bar', pool_li4:'Kids area', pool_li5:'9:00–21:00',
+    sauna_h3:'Finnish sauna', sauna_p:'Authentic wood-fired sauna.',
+    sauna_li1:'Wood-fired steam room', sauna_li2:'Lounge room', sauna_li3:'Plunge pool', sauna_li4:'Aromatherapy', sauna_li5:'Hourly booking',
+    mangal_title:'BBQ houses', mangal_sub:'For gatherings',
+    mangal1:'Small house', mangal1_p:'Up to 6 people', mangal1_price:'200 MDL / hour',
+    mangal2:'Medium house', mangal2_p:'Up to 12 people', mangal2_price:'350 MDL / hour',
+    mangal3:'Large house', mangal3_p:'Up to 20 people', mangal3_price:'500 MDL / hour',
+    gallery_title:'Gallery', gallery_sub:'Our territory',
+    reviews_title:'Reviews', reviews_sub:'What guests say', reviews_count:'reviews',
+    prices_title:'Prices', prices_sub:'Transparent', th_service:'Service', th_price:'Price',
+    p1:'Standard room', p2:'Comfort room', p3:'Luxury room', p4:'Separate cottage',
+    contacts_title:'Contacts', contacts_sub:'How to find us',
+    c_addr_l:'Address', c_addr_v:'Varnița village, Dniester bank, Moldova',
+    c_phone_l:'Phone', c_email_l:'Email', c_hours_l:'Working hours', c_hours_v:'Daily 9:00–22:00',
+    footer_text:'© 2025 Dniester Bank resort. All rights reserved.',
+    nl_title:'🎁 10% off your first booking', nl_sub:'Subscribe to our newsletter.', nl_btn:'Subscribe', nl_success:'✅ Thanks!',
+    book_title:'Booking', book_sub:'Fill out the form and we will contact you within an hour.',
+    sec1:'Your contacts', sec2:'Dates & guests', sec3:'Accommodation type', sec4:'Extras', sec5:'Wishes',
+    f_name:'Name *', f_phone:'Phone *', f_email:'Email', f_in:'Check-in date *', f_out:'Check-out date *',
+    f_adults:'Adults', f_children:'Children', f_room:'Choose an option *', f_nights:'Number of nights', f_comment:'Comment', f_password:'Password', f_birthday:'🎂 Date of birth',
+    ph_comment:'Special requests...', opt_choose:'— Choose —',
+    ex_sauna:'Sauna — 300 MDL', ex_m1:'Small BBQ — 200 MDL', ex_m2:'Medium BBQ — 350 MDL', ex_m3:'Large BBQ — 500 MDL', ex_pa:'Pool adult — 100 MDL', ex_pc:'Pool child — 50 MDL',
+    sum_title:'Preliminary calculation', sum_total:'Total:', btn_send:'Submit request',
+    ok_title:'Request sent!', ok_text:'Thank you! We will contact you within an hour.', ok_account:'My account',
+    cal_avail:'Available', cal_booked:'Booked', cal_sel:'Selected',
+    login_title:'Login', login_sub:'Sign in to your account', login_btn:'Login', no_account:"Don't have an account?", register_link:'Register',
+    register_title:'Registration', register_sub:'10% off your first booking', register_btn:'Create account', have_account:'Already have an account?', login_link:'Login',
+    logout:'Log out', my_bookings:'📋 My bookings', my_reviews:'⭐ My reviews', profile:'👤 Profile', profile_title:'My profile', save:'Save',
+    bonus_label:'Your bonuses', bonus_hint:'5% for each booking.',
+    admin_title:'Admin panel', admin_back:'← To site',
+    admin_tab_stats:'📊 Statistics', admin_tab_req:'📋 Requests', admin_tab_users:'👥 Guests', admin_tab_dates:'📅 Dates',
+    admin_stats_title:'General statistics', admin_req_title:'Requests', admin_users_title:'Guests', admin_dates_title:'Booked dates', admin_add_date:'+ Add',
+    rest_hero_title:'Restaurant «Dniester Bank»',
+    rest_hero_sub:'Moldovan and European cuisine on the Dniester bank. Fresh local produce, grilled dishes, homemade wines and panoramic views.',
+    rest_book_btn:'Reserve a table', rest_menu_btn:'View menu',
+    rest_info_hours:'Working hours', rest_info_hours_v:'9:00 – 23:00',
+    rest_info_cap:'Capacity', rest_info_cap_v:'up to 120 guests',
+    rest_info_terrace:'Terrace', rest_info_terrace_v:'with Dniester view',
+    rest_info_cuisine:'Cuisine', rest_info_cuisine_v:'Moldovan · European',
+    rest_menu_title:'Our menu', rest_menu_sub:'Fresh local dishes prepared with love',
+    rest_cat1:'🌅 Breakfast', rest_cat2:'🥗 Salads', rest_cat3:'🔥 Main', rest_cat4:'🍖 Grill', rest_cat5:'🍰 Desserts', rest_cat6:'🍷 Drinks',
+    rest_dishes_title:'Our dishes', rest_dishes_sub:'Take a look at our kitchen',
+    rest_atm_title:'Atmosphere', rest_atm_sub:'Cozy hall, summer terrace and Dniester view',
+    rest_atm1:'Main hall', rest_atm2:'Summer terrace', rest_atm3:'Evening atmosphere'
+  }
+};
+
+var SUPABASE_READY = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_ANON_KEY';
+var supabase = null;
+var CURRENT_USER = null;
+var currentLang = 'ru';
+
+var BOOKED_DATES = [];
+try { BOOKED_DATES = JSON.parse(localStorage.getItem('bookedDates') || '[]'); } catch(e){}
+var calDate = new Date();
+calDate.setDate(1);
+
+if(!BOOKED_DATES.length){
+  var _t = new Date();
+  var _a = function(n){ var d = new Date(_t); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; };
+  BOOKED_DATES = [_a(3), _a(4), _a(5)];
+  try { localStorage.setItem('bookedDates', JSON.stringify(BOOKED_DATES)); } catch(e){}
+}
+
+if(SUPABASE_READY && window.supabase){
+  try{ supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+  catch(e){ console.warn('Supabase init error:', e); }
+}
+
+function applyLang(lang){
+  if(!translations[lang]) lang = 'ru';
+  currentLang = lang;
+  var dict = translations[lang];
+  var els = document.querySelectorAll('[data-i18n]');
+  for(var i=0; i<els.length; i++){
+    var key = els[i].getAttribute('data-i18n');
+    if(dict[key] !== undefined) els[i].textContent = dict[key];
+  }
+  var phEls = document.querySelectorAll('[data-i18n-ph]');
+  for(var i=0; i<phEls.length; i++){
+    var key = phEls[i].getAttribute('data-i18n-ph');
+    if(dict[key]) phEls[i].placeholder = dict[key];
+  }
+  var btns = document.querySelectorAll('#langSwitch button');
+  for(var i=0; i<btns.length; i++) btns[i].classList.toggle('active', btns[i].dataset.lang === lang);
+  try{ localStorage.setItem('siteLang', lang); }catch(e){}
+  document.documentElement.lang = lang;
+  updateAccountBtn();
+  if(typeof updateSummary === 'function') updateSummary();
+  if(typeof renderCalendar === 'function') renderCalendar();
+}
+
+function showPage(id){
+  var pages = document.querySelectorAll('.page');
+  for(var i=0; i<pages.length; i++) pages[i].classList.remove('active');
+  var p = document.getElementById(id);
+  if(p){ p.classList.add('active'); window.scrollTo(0,0); }
+  var nav = document.getElementById('mainNav');
+  if(nav) nav.classList.remove('open');
+}
+function showBooking(){ showPage('page-booking'); renderCalendar(); }
+function showRestaurant(){ showPage('page-restaurant'); setupMenuTabs(); }
+function showAuth(){
+  showPage('page-auth');
+  var err = document.getElementById('authError');
+  var msg = document.getElementById('authMsg');
+  if(err) err.classList.remove('active');
+  if(msg) msg.classList.remove('active');
+}
+function showAccount(){
+  if(!CURRENT_USER){ showAuth(); return; }
+  showPage('page-account');
+  renderAccount();
+}
+function showAdmin(){
+  var pwd = prompt('🔐 ' + (translations[currentLang].admin_title || 'Пароль:'));
+  if(pwd !== ADMIN_PASSWORD){ if(pwd !== null) alert('Неверный пароль'); return; }
+  showPage('page-admin');
+  renderAdmin();
+}
+function scrollToId(id){
+  var el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function updateAccountBtn(){
+  var btn = document.getElementById('accountBtn');
+  if(!btn) return;
+  if(CURRENT_USER) btn.innerHTML = '👤 ' + CURRENT_USER.name.split(' ')[0];
+  else btn.innerHTML = '👤 <span data-i18n="login">' + translations[currentLang].login + '</span>';
+}
+function toggleAuth(){
+  var l = document.getElementById('loginForm');
+  var r = document.getElementById('registerForm');
+  if(!l || !r) return;
+  l.style.display = l.style.display === 'none' ? 'block' : 'none';
+  r.style.display = r.style.display === 'none' ? 'block' : 'none';
+  var err = document.getElementById('authError');
+  var msg = document.getElementById('authMsg');
+  if(err) err.classList.remove('active');
+  if(msg) msg.classList.remove('active');
+}
+
+/* ===== ГЛАЗОК ДЛЯ ПАРОЛЯ ===== */
+function togglePass(id, btn){
+  var inp = document.getElementById(id);
+  if(!inp) return;
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    btn.textContent = '🙈';
+    btn.title = 'Скрыть пароль';
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁';
+    btn.title = 'Показать пароль';
+  }
+}
+
+function setupMenuTabs(){
+  var tabs = document.querySelectorAll('.menu-tab');
+  for(var i=0; i<tabs.length; i++){
+    (function(tab){
+      tab.onclick = function(){
+        var all = document.querySelectorAll('.menu-tab');
+        for(var x=0; x<all.length; x++) all[x].classList.remove('active');
+        var allPanels = document.querySelectorAll('.menu-panel');
+        for(var x=0; x<allPanels.length; x++) allPanels[x].classList.remove('active');
+        this.classList.add('active');
+        var panel = document.getElementById('menu-' + this.dataset.menu);
+        if(panel) panel.classList.add('active');
+      };
+    })(tabs[i]);
+  }
+  var dishes = document.querySelectorAll('.dish');
+  for(var i=0; i<dishes.length; i++){
+    (function(d){
+      d.onclick = function(){
+        var img = this.querySelector('img');
+        if(img){
+          var lb = document.getElementById('lightbox');
+          var lbImg = document.getElementById('lbImg');
+          lbImg.src = img.src;
+          lb.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      };
+    })(dishes[i]);
+  }
+  var atm = document.querySelectorAll('.atmosphere-item');
+  for(var i=0; i<atm.length; i++){
+    (function(d){
+      d.onclick = function(){
+        var img = this.querySelector('img');
+        if(img){
+          var lb = document.getElementById('lightbox');
+          var lbImg = document.getElementById('lbImg');
+          lbImg.src = img.src;
+          lb.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      };
+    })(atm[i]);
+  }
+}
+
+/* ===== РЕГИСТРАЦИЯ ===== */
+async function handleRegister(){
+  var name = document.getElementById('regName').value.trim();
+  var email = document.getElementById('regEmail').value.trim().toLowerCase();
+  var phone = document.getElementById('regPhone').value.trim();
+  var birthday = document.getElementById('regBirthday').value;
+  var pwd = document.getElementById('regPassword').value;
+  var err = document.getElementById('authError');
+  var msg = document.getElementById('authMsg');
+  err.classList.remove('active');
+  msg.classList.remove('active');
+
+  if(!name || !email || !pwd){
+    err.textContent = 'Заполните обязательные поля';
+    err.classList.add('active');
+    return;
+  }
+  if(pwd.length < 6){
+    err.textContent = 'Пароль минимум 6 символов';
+    err.classList.add('active');
+    return;
+  }
+
+  if(!SUPABASE_READY){
+    var users = [];
+    try { users = JSON.parse(localStorage.getItem('users') || '[]'); } catch(e){ users = []; }
+    if(users.find(function(u){ return u.email === email; })){
+      err.innerHTML = '⚠️ Этот email уже зарегистрирован.<br><a href="#" onclick="toggleAuth(); return false;" style="color:var(--green);font-weight:700;text-decoration:underline;">Войти</a>';
+      err.classList.add('active');
+      return;
+    }
+    var user = {id: Date.now(), name: name, email: email, phone: phone, birthday: birthday, pwd: pwd, bonus: 0};
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+    CURRENT_USER = {id: user.id, name: name, email: email, phone: phone, birthday: birthday};
+    localStorage.setItem('currentUser', JSON.stringify(CURRENT_USER));
+    console.log('✅ Local register OK:', email);
+    updateAccountBtn();
+    showAccount();
+    return;
+  }
+
+  try{
+    var res = await supabase.auth.signUp({email: email, password: pwd, options: {data: {name: name, phone: phone, birthday: birthday}}});
+    if(res.error) throw res.error;
+
+    if(res.data.user){
+      await supabase.from('profiles').upsert({id: res.data.user.id, name: name, phone: phone, email: email, birthday: birthday, bonus: 0});
+
+      if(res.data.session){
+        CURRENT_USER = {id: res.data.user.id, name: name, email: email, phone: phone, birthday: birthday};
+        updateAccountBtn();
+        showAccount();
+      } else {
+        msg.innerHTML = '✅ <strong>Аккаунт создан!</strong><br><br>' +
+          '📧 На адрес <strong>' + email + '</strong> отправлено письмо для подтверждения.<br><br>' +
+          '<strong>Что делать:</strong><br>' +
+          '1️⃣ Откройте почту<br>' +
+          '2️⃣ Перейдите по ссылке из письма<br>' +
+          '3️⃣ Вернитесь и войдите<br><br>' +
+          '<small style="opacity:.8">Не нашли? Проверьте папку «Спам».</small>';
+        msg.classList.add('active');
+      }
+    }
+  } catch(e){
+    var emsg = (e.message || '').toLowerCase();
+    console.error('Register error:', e);
+    if(emsg.indexOf('already registered') !== -1 || emsg.indexOf('already exists') !== -1 || emsg.indexOf('user already') !== -1){
+      err.innerHTML = '⚠️ Этот email уже зарегистрирован.<br><a href="#" onclick="toggleAuth(); return false;" style="color:var(--green);font-weight:700;text-decoration:underline;">Войти</a>';
+    } else if(emsg.indexOf('invalid email') !== -1){
+      err.innerHTML = '❌ Некорректный email';
+    } else if(emsg.indexOf('password') !== -1){
+      err.innerHTML = '❌ Пароль слишком слабый (минимум 6 символов)';
+    } else {
+      err.innerHTML = '❌ Ошибка регистрации: ' + e.message;
+    }
+    err.classList.add('active');
+  }
+}
+
+/* ===== ВХОД ===== */
+async function handleLogin(){
+  var email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  var pwd = document.getElementById('loginPassword').value;
+  var err = document.getElementById('authError');
+  err.classList.remove('active');
+
+  if(!email || !pwd){
+    err.textContent = 'Заполните email и пароль';
+    err.classList.add('active');
+    return;
+  }
+
+  if(!SUPABASE_READY){
+    var users = [];
+    try { users = JSON.parse(localStorage.getItem('users') || '[]'); } catch(e){ users = []; }
+    console.log('📋 Local users:', users.map(function(u){ return u.email; }));
+
+    var user = users.find(function(u){ return u.email === email && u.pwd === pwd; });
+
+    if(!user){
+      var emailExists = users.find(function(u){ return u.email === email; });
+      if(emailExists){
+        err.innerHTML = '⚠️ Неверный пароль для <strong>' + email + '</strong>.<br><small>Проверьте раскладку и Caps Lock.</small>';
+      } else {
+        err.innerHTML = '⚠️ Аккаунт с email <strong>' + email + '</strong> не найден.<br><a href="#" onclick="toggleAuth(); return false;" style="color:var(--green);font-weight:700;text-decoration:underline;">Зарегистрироваться</a>';
+      }
+      err.classList.add('active');
+      return;
+    }
+
+    CURRENT_USER = {id: user.id, name: user.name, email: user.email, phone: user.phone, birthday: user.birthday};
+    localStorage.setItem('currentUser', JSON.stringify(CURRENT_USER));
+    console.log('✅ Login OK (local):', email);
+    updateAccountBtn();
+    showAccount();
+    return;
+  }
+
+  try{
+    var res = await supabase.auth.signInWithPassword({email: email, password: pwd});
+
+    if(res.error){
+      var emsg = (res.error.message || '').toLowerCase();
+      console.error('Login error:', res.error);
+
+      if(emsg.indexOf('email not confirmed') !== -1 || emsg.indexOf('not confirmed') !== -1 || emsg.indexOf('email not verified') !== -1){
+        err.innerHTML = '⚠️ <strong>Email не подтверждён!</strong><br><br>' +
+          'Проверьте почту <strong>' + email + '</strong> и перейдите по ссылке из письма.<br><br>' +
+          '<a href="#" onclick="resendConfirmation(\'' + email + '\'); return false;" style="color:var(--green);font-weight:700;text-decoration:underline;">📧 Отправить письмо повторно</a>';
+      } else if(emsg.indexOf('invalid login') !== -1 || emsg.indexOf('invalid credentials') !== -1){
+        err.innerHTML = '❌ Неверный email или пароль.<br><small>Если только что зарегистрировались — проверьте, что email подтверждён.</small>';
+      } else if(emsg.indexOf('rate limit') !== -1 || emsg.indexOf('too many') !== -1){
+        err.innerHTML = '⏱️ Слишком много попыток. Подождите минуту.';
+      } else {
+        err.innerHTML = '❌ Ошибка входа: ' + res.error.message;
+      }
+      err.classList.add('active');
+      return;
+    }
+
+    if(res.data.user){
+      var profileRes = await supabase.from('profiles').select('*').eq('id', res.data.user.id).single();
+      var profile = profileRes.data;
+      CURRENT_USER = {
+        id: res.data.user.id,
+        name: (profile && profile.name) || (res.data.user.user_metadata && res.data.user.user_metadata.name) || 'Гость',
+        email: res.data.user.email,
+        phone: (profile && profile.phone) || '',
+        birthday: (profile && profile.birthday) || ''
+      };
+      console.log('✅ Login OK (supabase):', email);
+      updateAccountBtn();
+      showAccount();
+    }
+  } catch(e){
+    console.error('Login exception:', e);
+    err.innerHTML = '❌ Ошибка подключения: ' + (e.message || 'проверьте интернет');
+    err.classList.add('active');
+  }
+}
+
+async function resendConfirmation(email){
+  if(!SUPABASE_READY || !supabase){
+    alert('Supabase не настроен');
+    return;
+  }
+  try {
+    var res = await supabase.auth.resend({ type: 'signup', email: email });
+    if(res.error) throw res.error;
+    alert('✅ Письмо отправлено повторно на:\n' + email + '\n\nПроверьте папку «Спам».');
+  } catch(e){
+    alert('❌ Ошибка: ' + (e.message || 'не удалось отправить'));
+  }
+}
+window.resendConfirmation = resendConfirmation;
+
+async function handleLogout(){
+  if(SUPABASE_READY && supabase) await supabase.auth.signOut();
+  CURRENT_USER = null;
+  localStorage.removeItem('currentUser');
+  updateAccountBtn();
+  showPage('page-home');
+}
+
+async function restoreSession(){
+  if(!SUPABASE_READY){
+    var saved = localStorage.getItem('currentUser');
+    if(saved){ try { CURRENT_USER = JSON.parse(saved); } catch(e){ CURRENT_USER = null; } }
+    updateAccountBtn();
+    return;
+  }
+  try{
+    var res = await supabase.auth.getSession();
+    if(res.data.session){
+      var user = res.data.session.user;
+      var profileRes = await supabase.from('profiles').select('*').eq('id', user.id).single();
+      var profile = profileRes.data;
+      CURRENT_USER = {
+        id: user.id,
+        name: (profile && profile.name) || (user.user_metadata && user.user_metadata.name) || 'Гость',
+        email: user.email,
+        phone: (profile && profile.phone) || '',
+        birthday: (profile && profile.birthday) || ''
+      };
+      updateAccountBtn();
+    }
+  } catch(e){ console.warn('restoreSession:', e); }
+}
+
+async function renderAccount(){
+  if(!CURRENT_USER) return;
+  document.getElementById('userName').textContent = CURRENT_USER.name;
+  document.getElementById('userEmail').textContent = CURRENT_USER.email;
+  document.getElementById('userAvatar').textContent = CURRENT_USER.name.charAt(0).toUpperCase();
+  document.getElementById('profName').value = CURRENT_USER.name;
+  document.getElementById('profEmail').value = CURRENT_USER.email;
+  document.getElementById('profPhone').value = CURRENT_USER.phone || '';
+  document.getElementById('profBirthday').value = CURRENT_USER.birthday || '';
+  var bonus = 0;
+  if(SUPABASE_READY){
+    try{
+      var res = await supabase.from('profiles').select('bonus').eq('id', CURRENT_USER.id).single();
+      bonus = (res.data && res.data.bonus) || 0;
+    } catch(e){}
+  } else {
+    var users = JSON.parse(localStorage.getItem('users') || '[]');
+    var u = users.find(function(x){ return x.email === CURRENT_USER.email; });
+    bonus = (u && u.bonus) || 0;
+  }
+  document.getElementById('bonusVal').textContent = bonus + ' MDL';
+  var bookings = [];
+  if(SUPABASE_READY){
+    try{
+      var res = await supabase.from('bookings').select('*').eq('user_id', CURRENT_USER.id).order('created_at', {ascending:false});
+      bookings = res.data || [];
+    } catch(e){}
+  } else {
+    var all = JSON.parse(localStorage.getItem('requests') || '[]');
+    bookings = all.filter(function(r){ return r.email && r.email.toLowerCase() === CURRENT_USER.email; });
+  }
+  var bookingsEl = document.getElementById('myBookingsList');
+  if(!bookings.length){
+    bookingsEl.innerHTML = '<div class="admin-empty">Нет броней.</div>';
+  } else {
+    bookingsEl.innerHTML = bookings.map(function(r){
+      var ci = r.check_in || r.checkin;
+      var co = r.check_out || r.checkout;
+      var isPast = new Date(co) < new Date();
+      var isCancelled = r.status === 'cancelled';
+      var cls = isCancelled ? 'cancelled' : (isPast ? 'past' : '');
+      var statusLabel = 'Новая', statusCls = 'new';
+      if(isCancelled){ statusLabel = 'Отменена'; statusCls = 'cancelled'; }
+      else if(r.status === 'confirmed'){ statusLabel = 'Подтв.'; statusCls = 'confirmed'; }
+      else if(isPast){ statusLabel = 'Завершена'; statusCls = 'past'; }
+      var html = '<div class="booking-card ' + cls + '">';
+      html += '<div class="booking-card-header"><div><div class="room-name">' + r.room + '</div><div class="dates">' + ci + ' → ' + co + ' (' + r.nights + ' ноч.)</div></div><span class="booking-status ' + statusCls + '">' + statusLabel + '</span></div>';
+      html += '<div class="booking-card-body"><div><strong>Сумма:</strong> ' + r.total + '</div></div>';
+      html += '<div class="booking-actions">';
+      if(!isCancelled && !isPast) html += '<button class="cancel" onclick="cancelMyBooking(\'' + r.id + '\')">Отменить</button>';
+      if(isPast && !isCancelled) html += '<button class="review" onclick="openReviewModal(\'' + r.id + '\')">Оставить отзыв</button>';
+      html += '</div></div>';
+      return html;
+    }).join('');
+  }
+  var myReviews = [];
+  if(SUPABASE_READY){
+    try{
+      var res = await supabase.from('reviews').select('*').eq('user_id', CURRENT_USER.id).order('created_at', {ascending:false});
+      myReviews = res.data || [];
+    } catch(e){}
+  } else {
+    myReviews = JSON.parse(localStorage.getItem('reviews') || '[]').filter(function(r){ return r.userId === CURRENT_USER.id; });
+  }
+  var reviewsEl = document.getElementById('myReviewsList');
+  if(!myReviews.length){
+    reviewsEl.innerHTML = '<div class="admin-empty">Нет отзывов.</div>';
+  } else {
+    reviewsEl.innerHTML = myReviews.map(function(rv){
+      var date = new Date(rv.created_at || rv.date).toLocaleDateString('ru');
+      return '<div class="booking-card"><div class="booking-card-header"><div><div class="stars" style="color:var(--gold);font-size:1.1rem;">' + '★'.repeat(rv.rating) + '☆'.repeat(5 - rv.rating) + '</div><div class="dates">' + date + '</div></div></div><div class="booking-card-body"><p style="font-style:italic;">' + rv.text + '</p></div></div>';
+    }).join('');
+  }
+}
+
+async function cancelMyBooking(id){
+  if(!confirm('Отменить?')) return;
+  if(SUPABASE_READY){
+    try{ await supabase.from('bookings').update({status:'cancelled'}).eq('id', id); renderAccount(); renderCalendar(); } catch(e){ alert(e.message); }
+  } else {
+    var all = JSON.parse(localStorage.getItem('requests') || '[]');
+    var r = all.find(function(x){ return String(x.id) === String(id); });
+    if(r){ r.status = 'cancelled'; localStorage.setItem('requests', JSON.stringify(all)); renderAccount(); }
+  }
+}
+
+async function saveProfile(){
+  var name = document.getElementById('profName').value.trim();
+  var phone = document.getElementById('profPhone').value.trim();
+  var birthday = document.getElementById('profBirthday').value;
+  if(!name) return;
+  if(SUPABASE_READY){
+    try{
+      await supabase.from('profiles').update({name: name, phone: phone, birthday: birthday}).eq('id', CURRENT_USER.id);
+      CURRENT_USER.name = name; CURRENT_USER.phone = phone; CURRENT_USER.birthday = birthday;
+      updateAccountBtn(); renderAccount(); alert('Сохранено');
+    } catch(e){ alert(e.message); }
+  } else {
+    var users = JSON.parse(localStorage.getItem('users') || '[]');
+    var u = users.find(function(x){ return x.email === CURRENT_USER.email; });
+    if(u){ u.name = name; u.phone = phone; u.birthday = birthday; localStorage.setItem('users', JSON.stringify(users)); }
+    CURRENT_USER.name = name; CURRENT_USER.phone = phone; CURRENT_USER.birthday = birthday;
+    localStorage.setItem('currentUser', JSON.stringify(CURRENT_USER));
+    updateAccountBtn(); renderAccount(); alert('Сохранено');
+  }
+}
+
+async function openReviewModal(bookingId){
+  var rating = parseInt(prompt('Оценка 1-5:', '5'));
+  if(!rating || rating < 1 || rating > 5) return;
+  var text = prompt('Отзыв:', '');
+  if(!text) return;
+  if(SUPABASE_READY){
+    try{ await supabase.from('reviews').insert({user_id: CURRENT_USER.id, user_name: CURRENT_USER.name, booking_id: String(bookingId), rating: rating, text: text}); renderAccount(); loadReviews(); alert('Спасибо!'); } catch(e){ alert(e.message); }
+  } else {
+    var all = JSON.parse(localStorage.getItem('reviews') || '[]');
+    all.unshift({id: Date.now(), userId: CURRENT_USER.id, userName: CURRENT_USER.name, bookingId: bookingId, rating: rating, text: text, date: new Date().toISOString()});
+    localStorage.setItem('reviews', JSON.stringify(all));
+    renderAccount(); alert('Спасибо');
+  }
+}
+
+async function loadReviews(){
+  var grid = document.getElementById('reviewsGrid');
+  if(!grid) return;
+  var reviews = [];
+  if(SUPABASE_READY){
+    try{
+      var res = await supabase.from('reviews').select('*').order('created_at', {ascending:false}).limit(20);
+      reviews = res.data || [];
+    } catch(e){}
+  } else {
+    reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+  }
+  if(!reviews.length){
+    reviews = [
+      {user_name:'Анна М.', rating:5, text:'Прекрасное место!', created_at:'2024-07-15'},
+      {user_name:'Игорь П.', rating:5, text:'Всё на высшем уровне!', created_at:'2024-08-20'},
+      {user_name:'Мария К.', rating:4, text:'Чисто, уютно!', created_at:'2024-09-10'}
+    ];
+  }
+  var avg = reviews.reduce(function(s,r){ return s + r.rating; }, 0) / reviews.length;
+  document.getElementById('avgScore').textContent = avg.toFixed(1);
+  document.getElementById('reviewsCount').textContent = reviews.length + ' ' + translations[currentLang].reviews_count;
+  grid.innerHTML = reviews.slice(0,6).map(function(r){
+    var name = r.user_name || r.userName || 'Гость';
+    var date = new Date(r.created_at || r.date).toLocaleDateString('ru', {month:'long', year:'numeric'});
+    return '<div class="review"><div class="stars">' + '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) + '</div><p class="text">«' + r.text + '»</p><div class="author"><div class="avatar">' + name.charAt(0) + '</div><div><div class="name">' + name + '</div><div class="date">' + date + '</div></div></div></div>';
+  }).join('');
+}
+
+async function loadBookedDates(){
+  if(SUPABASE_READY){
+    try{
+      var res = await supabase.from('bookings').select('check_in, check_out, status').neq('status', 'cancelled');
+      var dates = [];
+      (res.data || []).forEach(function(r){
+        var start = new Date(r.check_in), end = new Date(r.check_out);
+        for(var d = new Date(start); d < end; d.setDate(d.getDate()+1)) dates.push(d.toISOString().split('T')[0]);
+      });
+      var combined = BOOKED_DATES.concat(dates);
+      BOOKED_DATES = combined.filter(function(v, i, a){ return a.indexOf(v) === i; });
+    } catch(e){}
+  }
+}
+
+function renderCalendar(){
+  var grid = document.getElementById('calGrid');
+  var monthEl = document.getElementById('calMonth');
+  if(!grid) return;
+  var year = calDate.getFullYear(), month = calDate.getMonth();
+  var months, days;
+  if(currentLang === 'ro'){ months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie']; days = ['Lu','Ma','Mi','Jo','Vi','Sâ','Du']; }
+  else if(currentLang === 'en'){ months = ['January','February','March','April','May','June','July','August','September','October','November','December']; days = ['Mo','Tu','We','Th','Fr','Sa','Su']; }
+  else { months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь']; days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс']; }
+  monthEl.textContent = months[month] + ' ' + year;
+  var html = '';
+  days.forEach(function(d){ html += '<div class="cal-day-name">' + d + '</div>'; });
+  var firstDay = new Date(year, month, 1);
+  var startWeekday = firstDay.getDay();
+  startWeekday = (startWeekday === 0) ? 6 : startWeekday - 1;
+  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  var todayStr = new Date().toISOString().split('T')[0];
+  for(var i=0;i<startWeekday;i++) html += '<div class="cal-day other-month"></div>';
+  var ci = document.getElementById('checkin'), co = document.getElementById('checkout');
+  for(var d=1; d<=daysInMonth; d++){
+    var ds = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    var isBooked = BOOKED_DATES.indexOf(ds) !== -1;
+    var isPast = ds < todayStr;
+    var isToday = ds === todayStr;
+    var inRange = ci.value && co.value && ds >= ci.value && ds <= co.value;
+    var cls = 'cal-day';
+    if(isBooked || isPast) cls += ' booked';
+    if(isToday) cls += ' today';
+    if(inRange) cls += ' selected';
+    html += '<div class="' + cls + '" data-date="' + ds + '">' + d + '</div>';
+  }
+  grid.innerHTML = html;
+  var cells = grid.querySelectorAll('.cal-day[data-date]');
+  for(var i=0; i<cells.length; i++){
+    cells[i].onclick = function(){
+      if(this.classList.contains('booked')) return;
+      handleCalendarClick(this.dataset.date);
+    };
+  }
+}
+
+function handleCalendarClick(ds){
+  var ci = document.getElementById('checkin'), co = document.getElementById('checkout');
+  if(!ci.value || (ci.value && co.value)){ ci.value = ds; co.value = ''; }
+  else {
+    if(ds <= ci.value){ ci.value = ds; co.value = ''; }
+    else co.value = ds;
+  }
+  if(co.value) co.min = ci.value;
+  renderCalendar();
+  updateSummary();
+}
+
+function updateSummary(){
+  var ci = document.getElementById('checkin'), co = document.getElementById('checkout');
+  var room = document.getElementById('room'), nights = document.getElementById('nights');
+  var summaryRows = document.getElementById('summaryRows');
+  var totalPrice = document.getElementById('totalPrice');
+  if(!ci || !room) return;
+  if(ci.value && co.value){
+    var d1 = new Date(ci.value), d2 = new Date(co.value);
+    var diff = Math.round((d2-d1)/86400000);
+    nights.value = diff > 0 ? diff : 1;
+  } else nights.value = 1;
+  var extras = document.querySelectorAll('.extra');
+  var rows = '', subtotal = 0;
+  var langKey = currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  if(room.value){
+    var per = parseInt(room.value), n = parseInt(nights.value) || 1;
+    var sum = per * n;
+    subtotal += sum;
+    var opt = room.options[room.selectedIndex];
+    var name = opt.dataset['name' + langKey] || opt.dataset.nameRu || opt.text;
+    rows += '<div class="summary-row"><span>' + name + ' × ' + n + '</span><span>' + sum + ' MDL</span></div>';
+  }
+  for(var i=0; i<extras.length; i++){
+    if(extras[i].checked){
+      var p = parseInt(extras[i].value);
+      subtotal += p;
+      var name = extras[i].dataset['name' + langKey] || extras[i].dataset.nameRu || '';
+      rows += '<div class="summary-row"><span>' + name + '</span><span>' + p + ' MDL</span></div>';
+    }
+  }
+  if(!rows) rows = '<div class="summary-row"><span>—</span><span>—</span></div>';
+  summaryRows.innerHTML = rows;
+  totalPrice.textContent = subtotal + ' MDL';
+  if(CURRENT_USER){
+    document.getElementById('bk_name').value = CURRENT_USER.name || '';
+    document.getElementById('bk_email').value = CURRENT_USER.email || '';
+    document.getElementById('bk_phone').value = CURRENT_USER.phone || '';
+  }
+}
+
+async function renderAdmin(){
+  renderStats();
+  renderRequests();
+  renderUsers();
+  renderBookedDates();
+}
+
+async function renderStats(){
+  var el = document.getElementById('statsGrid');
+  if(!el) return;
+  var requests = [];
+  if(SUPABASE_READY){
+    try{ var res = await supabase.from('bookings').select('*'); requests = res.data || []; } catch(e){}
+  } else {
+    requests = JSON.parse(localStorage.getItem('requests') || '[]');
+  }
+  var total = requests.length;
+  var paid = requests.filter(function(r){ return r.status === 'paid'; });
+  var revenue = paid.reduce(function(s, r){ return s + (parseInt(r.total) || 0); }, 0);
+  var pending = requests.filter(function(r){ return r.status === 'new'; }).length;
+  el.innerHTML =
+    '<div class="stat-card"><div class="label">Всего заявок</div><div class="value">' + total + '</div><div class="change">' + pending + ' новых</div></div>' +
+    '<div class="stat-card gold"><div class="label">Доход</div><div class="value">' + revenue.toLocaleString('ru') + ' MDL</div><div class="change">' + paid.length + ' оплачено</div></div>' +
+    '<div class="stat-card blue"><div class="label">Средний чек</div><div class="value">' + (paid.length ? Math.round(revenue / paid.length) : 0) + ' MDL</div></div>';
+}
+
+async function renderRequests(){
+  var el = document.getElementById('requestsList');
+  if(!el) return;
+  var requests = [];
+  if(SUPABASE_READY){
+    try{ var res = await supabase.from('bookings').select('*').order('created_at', {ascending:false}); requests = res.data || []; } catch(e){}
+  } else {
+    requests = JSON.parse(localStorage.getItem('requests') || '[]');
+  }
+  if(!requests.length){ el.innerHTML = '<div class="admin-empty">Нет заявок</div>'; return; }
+  el.innerHTML = '<table class="admin-table"><thead><tr><th>Дата</th><th>Имя</th><th>Телефон</th><th>Заезд</th><th>Номер</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>' + requests.map(function(r){
+    var date = new Date(r.created_at || r.date).toLocaleDateString('ru');
+    var ci = r.check_in || r.checkin, co = r.check_out || r.checkout;
+    var sLabel = 'Новая', sCls = 'new';
+    if(r.status === 'confirmed'){ sLabel = 'Подтв.'; sCls = 'confirmed'; }
+    else if(r.status === 'cancelled'){ sLabel = 'Отм.'; sCls = 'cancelled'; }
+    else if(r.status === 'paid'){ sLabel = '✅ Опл.'; sCls = 'paid'; }
+    return '<tr><td>' + date + '</td><td>' + r.name + '</td><td>' + r.phone + '</td><td>' + ci + ' → ' + co + '</td><td>' + r.room + '</td><td>' + r.total + '</td><td><span class="status ' + sCls + '">' + sLabel + '</span></td><td class="actions">' +
+      '<button onclick="confirmReq(\'' + r.id + '\')" title="Подтвердить">✅</button>' +
+      '<button onclick="cancelReq(\'' + r.id + '\')" title="Отменить">❌</button>' +
+      '<button onclick="deleteReq(\'' + r.id + '\')" title="Удалить">🗑️</button>' +
+      '</td></tr>';
+  }).join('') + '</tbody></table>';
+}
+
+async function renderUsers(){
+  var el = document.getElementById('usersList');
+  if(!el) return;
+  var users = [];
+  if(SUPABASE_READY){
+    try{ var res = await supabase.from('profiles').select('*'); users = res.data || []; } catch(e){}
+  } else {
+    users = JSON.parse(localStorage.getItem('users') || '[]');
+  }
+  if(!users.length){ el.innerHTML = '<div class="admin-empty">Нет гостей</div>'; return; }
+  el.innerHTML = '<table class="admin-table"><thead><tr><th>Имя</th><th>Email</th><th>Телефон</th><th>Бонусы</th></tr></thead><tbody>' + users.map(function(u){
+    return '<tr><td>' + u.name + '</td><td>' + u.email + '</td><td>' + (u.phone || '—') + '</td><td>' + (u.bonus || 0) + ' MDL</td></tr>';
+  }).join('') + '</tbody></table>';
+}
+
+function renderBookedDates(){
+  var el = document.getElementById('bookedDatesList');
+  if(!el) return;
+  if(!BOOKED_DATES.length){ el.innerHTML = '<div class="admin-empty">Нет дат</div>'; return; }
+  var sorted = BOOKED_DATES.slice().sort();
+  el.innerHTML = sorted.map(function(d){
+    return '<span class="date-chip">' + d + '<span class="rm" onclick="removeBookedDate(\'' + d + '\')">×</span></span>';
+  }).join('');
+}
+
+async function confirmReq(id){
+  if(SUPABASE_READY){
+    try{ await supabase.from('bookings').update({status:'confirmed'}).eq('id', id); renderRequests(); renderStats(); } catch(e){}
+  } else {
+    var all = JSON.parse(localStorage.getItem('requests') || '[]');
+    var r = all.find(function(x){ return String(x.id) === String(id); });
+    if(r){ r.status = 'confirmed'; localStorage.setItem('requests', JSON.stringify(all)); renderRequests(); }
+  }
+}
+
+async function cancelReq(id){
+  if(SUPABASE_READY){
+    try{ await supabase.from('bookings').update({status:'cancelled'}).eq('id', id); renderRequests(); renderStats(); } catch(e){}
+  } else {
+    var all = JSON.parse(localStorage.getItem('requests') || '[]');
+    var r = all.find(function(x){ return String(x.id) === String(id); });
+    if(r){ r.status = 'cancelled'; localStorage.setItem('requests', JSON.stringify(all)); renderRequests(); }
+  }
+}
+
+async function deleteReq(id){
+  if(!confirm('Удалить?')) return;
+  if(SUPABASE_READY){
+    try{ await supabase.from('bookings').delete().eq('id', id); renderRequests(); renderStats(); } catch(e){}
+  } else {
+    var all = JSON.parse(localStorage.getItem('requests') || '[]');
+    all = all.filter(function(x){ return String(x.id) !== String(id); });
+    localStorage.setItem('requests', JSON.stringify(all));
+    renderRequests();
+  }
+}
+
+function addBookedDate(){
+  var input = document.getElementById('newBookedDate');
+  var val = input.value;
+  if(!val) return;
+  if(BOOKED_DATES.indexOf(val) === -1){
+    BOOKED_DATES.push(val);
+    localStorage.setItem('bookedDates', JSON.stringify(BOOKED_DATES));
+    renderBookedDates(); renderCalendar();
+  }
+  input.value = '';
+}
+
+function removeBookedDate(d){
+  BOOKED_DATES = BOOKED_DATES.filter(function(x){ return x !== d; });
+  localStorage.setItem('bookedDates', JSON.stringify(BOOKED_DATES));
+  renderBookedDates(); renderCalendar();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  console.log('🚀 Initializing...');
+
+  var langSwitch = document.getElementById('langSwitch');
+  if(langSwitch){
+    langSwitch.onclick = function(e){
+      var btn = e.target.closest('button[data-lang]');
+      if(!btn) return;
+      e.preventDefault();
+      applyLang(btn.dataset.lang);
+    };
+  }
+
+  var accountBtn = document.getElementById('accountBtn');
+  if(accountBtn){
+    accountBtn.onclick = function(e){
+      e.preventDefault();
+      if(CURRENT_USER) showAccount();
+      else showAuth();
+    };
+  }
+
+  var burgerBtn = document.getElementById('burgerBtn');
+  if(burgerBtn){
+    burgerBtn.onclick = function(e){
+      e.preventDefault();
+      var nav = document.getElementById('mainNav');
+      if(nav) nav.classList.toggle('open');
+    };
+  }
+
+  var navLinks = document.querySelectorAll('.nav-link');
+  for(var i=0; i<navLinks.length; i++){
+    (function(link){
+      link.onclick = function(e){
+        e.preventDefault();
+        var target = this.dataset.target;
+        var nav = document.getElementById('mainNav');
+        if(nav) nav.classList.remove('open');
+        if(target === 'booking'){ showBooking(); return; }
+        if(target === 'restaurant-page'){ showRestaurant(); return; }
+        var homePage = document.getElementById('page-home');
+        if(homePage && !homePage.classList.contains('active')){
+          showPage('page-home');
+          setTimeout(function(){ scrollToId(target); }, 100);
+        } else {
+          scrollToId(target);
+        }
+      };
+    })(navLinks[i]);
+  }
+
+  var calPrev = document.getElementById('calPrev');
+  var calNext = document.getElementById('calNext');
+  if(calPrev) calPrev.onclick = function(){ calDate.setMonth(calDate.getMonth()-1); renderCalendar(); };
+  if(calNext) calNext.onclick = function(){ calDate.setMonth(calDate.getMonth()+1); renderCalendar(); };
+
+  var checkinEl = document.getElementById('checkin');
+  var checkoutEl = document.getElementById('checkout');
+  var roomEl = document.getElementById('room');
+  if(checkinEl) checkinEl.onchange = function(){ if(this.value && checkoutEl) checkoutEl.min = this.value; updateSummary(); renderCalendar(); };
+  if(checkoutEl) checkoutEl.onchange = function(){ updateSummary(); renderCalendar(); };
+  if(roomEl) roomEl.onchange = updateSummary;
+  var extraItems = document.querySelectorAll('.extra');
+  for(var j=0; j<extraItems.length; j++) extraItems[j].onchange = updateSummary;
+
+  var bookingForm = document.getElementById('bookingForm');
+  if(bookingForm){
+    bookingForm.onsubmit = async function(e){
+      e.preventDefault();
+      var ci = document.getElementById('checkin'), co = document.getElementById('checkout');
+      var room = document.getElementById('room'), nights = document.getElementById('nights');
+      var submitBtn = document.getElementById('submitBtn');
+      var totalPrice = document.getElementById('totalPrice');
+      var extras = document.querySelectorAll('.extra');
+      var form = bookingForm;
+      if(!ci.value || !co.value){ alert('Выберите даты'); return; }
+      if(new Date(co.value) <= new Date(ci.value)){ alert('Дата выезда должна быть позже заезда'); return; }
+      if(!room.value){ alert('Выберите номер'); return; }
+      var extrasArr = [];
+      for(var i=0; i<extras.length; i++){
+        if(extras[i].checked) extrasArr.push(extras[i].dataset.nameRu || extras[i].value);
+      }
+      var data = {
+        user_id: CURRENT_USER ? CURRENT_USER.id : null,
+        name: form.name.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim(),
+        check_in: ci.value, check_out: co.value,
+        nights: parseInt(nights.value),
+        adults: parseInt(form.adults.value),
+        children: parseInt(form.children.value),
+        room: room.options[room.selectedIndex].dataset.nameRu || room.options[room.selectedIndex].text,
+        extras: JSON.stringify(extrasArr),
+        comment: form.comment.value.trim(),
+        total: totalPrice.textContent,
+        status: 'new'
+      };
+      if(SUPABASE_READY && supabase){
+        try{
+          submitBtn.disabled = true;
+          submitBtn.textContent = '...';
+          var res = await supabase.from('bookings').insert([data]);
+          if(res.error) throw res.error;
+          submitBtn.disabled = false;
+          submitBtn.textContent = translations[currentLang].btn_send;
+        } catch(err){
+          alert('Ошибка: ' + err.message);
+          submitBtn.disabled = false;
+          submitBtn.textContent = translations[currentLang].btn_send;
+          return;
+        }
+      } else {
+        var all = JSON.parse(localStorage.getItem('requests') || '[]');
+        data.id = Date.now();
+        data.date = new Date().toISOString();
+        all.unshift(data);
+        localStorage.setItem('requests', JSON.stringify(all));
+      }
+      var start = new Date(ci.value), end = new Date(co.value);
+      for(var d = new Date(start); d < end; d.setDate(d.getDate()+1)){
+        var ds = d.toISOString().split('T')[0];
+        if(BOOKED_DATES.indexOf(ds) === -1) BOOKED_DATES.push(ds);
+      }
+      localStorage.setItem('bookedDates', JSON.stringify(BOOKED_DATES));
+      form.style.display = 'none';
+      document.getElementById('successMsg').classList.add('active');
+      window.scrollTo(0,0);
+    };
+  }
+
+  var nlForm = document.getElementById('newsletterForm');
+  if(nlForm){
+    nlForm.onsubmit = async function(e){
+      e.preventDefault();
+      var email = this.email.value.trim();
+      if(!email) return;
+      if(SUPABASE_READY && supabase){
+        try{ await supabase.from('subscribers').insert([{email: email}]); } catch(e){}
+      } else {
+        var subs = JSON.parse(localStorage.getItem('subscribers') || '[]');
+        if(subs.indexOf(email) === -1){ subs.push(email); localStorage.setItem('subscribers', JSON.stringify(subs)); }
+      }
+      this.style.display = 'none';
+      document.getElementById('nlSuccess').classList.add('active');
+    };
+  }
+
+  var accTabs = document.querySelectorAll('.account-tab');
+  for(var k=0; k<accTabs.length; k++){
+    (function(tab){
+      tab.onclick = function(){
+        var allTabs = document.querySelectorAll('.account-tab');
+        for(var x=0; x<allTabs.length; x++) allTabs[x].classList.remove('active');
+        var allPanels = document.querySelectorAll('.account-panel');
+        for(var x=0; x<allPanels.length; x++) allPanels[x].classList.remove('active');
+        this.classList.add('active');
+        var panel = document.getElementById('panel-' + this.dataset.tab);
+        if(panel) panel.classList.add('active');
+      };
+    })(accTabs[k]);
+  }
+
+  var adminTabs = document.querySelectorAll('.admin-tab');
+  for(var m=0; m<adminTabs.length; m++){
+    (function(tab){
+      tab.onclick = function(){
+        var allTabs = document.querySelectorAll('.admin-tab');
+        for(var x=0; x<allTabs.length; x++) allTabs[x].classList.remove('active');
+        var allPanels = document.querySelectorAll('.admin-panel');
+        for(var x=0; x<allPanels.length; x++) allPanels[x].classList.remove('active');
+        this.classList.add('active');
+        var panel = document.getElementById('panel-' + this.dataset.tab);
+        if(panel) panel.classList.add('active');
+      };
+    })(adminTabs[m]);
+  }
+
+  setupMenuTabs();
+
+  (function(){
+    var grid = document.getElementById('galleryGrid');
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lbImg');
+    if(!grid || !lb) return;
+    var imgs = grid.querySelectorAll('img');
+    var cur = 0;
+    for(var i=0; i<imgs.length; i++){
+      (function(img, idx){
+        img.onclick = function(){
+          cur = idx;
+          lbImg.src = imgs[idx].src;
+          lb.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        };
+      })(imgs[i], i);
+    }
+    document.getElementById('lbClose').onclick = function(){ lb.classList.remove('active'); document.body.style.overflow = ''; };
+    document.getElementById('lbNext').onclick = function(){ cur = (cur+1)%imgs.length; lbImg.src = imgs[cur].src; };
+    document.getElementById('lbPrev').onclick = function(){ cur = (cur-1+imgs.length)%imgs.length; lbImg.src = imgs[cur].src; };
+    lb.onclick = function(e){ if(e.target === lb){ lb.classList.remove('active'); document.body.style.overflow = ''; } };
+  })();
+
+  var savedLang = 'ru';
+  try{ savedLang = localStorage.getItem('siteLang') || 'ru'; }catch(e){}
+  applyLang(savedLang);
+
+  restoreSession().then(function(){
+    if(location.hash === '#booking') showBooking();
+    else if(location.hash === '#account') showAccount();
+    else if(location.hash === '#auth') showAuth();
+    else if(location.hash === '#restaurant') showRestaurant();
+
+    loadReviews();
+    loadBookedDates().then(function(){ renderCalendar(); });
+  });
+
+  document.onkeydown = function(e){
+    if(e.ctrlKey && e.shiftKey && e.key === 'A'){ e.preventDefault(); showAdmin(); }
+  };
+
+  console.log('✅ All handlers attached');
+});
+</script>
+</body>
+</html>
